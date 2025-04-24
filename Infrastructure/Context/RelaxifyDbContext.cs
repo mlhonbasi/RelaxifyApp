@@ -18,8 +18,18 @@ namespace Infrastructure.Context
             //options.UseNpgSql(Configuration.GetConnectionString("RelaxifyDb"));
         }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Content> Contents { get; set; }
+        public virtual DbSet<MeditationContent> MeditationContents { get; set; }
+        public virtual DbSet<BreathingContent> BreathingContents { get; set; }
+        public virtual DbSet<MusicContent> MusicContents { get; set; }
+        public virtual DbSet<GameContent> GameContents { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Content>()
+                        .Property(c => c.Category)
+                        .HasConversion<string>();
+
             base.OnModelCreating(modelBuilder);
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
