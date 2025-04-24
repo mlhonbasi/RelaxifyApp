@@ -28,8 +28,8 @@ namespace Api.Controllers
         {
             try
             {
-                await loginService.LoginAsync(loginRequest);
-                return Ok();
+                var res = await loginService.LoginAsync(loginRequest);
+                return Ok(res);
             }
             catch
             {
