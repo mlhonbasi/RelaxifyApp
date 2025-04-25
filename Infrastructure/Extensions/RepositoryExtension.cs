@@ -25,6 +25,7 @@ namespace Infrastructure.Extensions
             });
 
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IContentRepository, ContentRepository>();
             services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 
             return services;
