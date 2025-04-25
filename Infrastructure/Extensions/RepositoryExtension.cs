@@ -25,7 +25,13 @@ namespace Infrastructure.Extensions
             });
 
             services.AddScoped<IUserRepository, UserRepository>();
+
             services.AddScoped<IContentRepository, ContentRepository>();
+            services.AddScoped<IBreathingContentRepository, BreathingContentRepository>();
+            services.AddScoped<IMeditationContentRepository, MeditationContentRepository>();
+            services.AddScoped<IMusicContentRepository, MusicContentRepository>();  
+            services.AddScoped<IGameContentRepository, GameContentRepository>();
+
             services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 
             return services;

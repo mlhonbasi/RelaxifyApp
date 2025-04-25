@@ -19,4 +19,12 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\Contents\BreathingContent\Models\" />
+    <Folder Include="Services\Contents\Content\Models\" />
+    <Folder Include="Services\Contents\GameContent\Models\" />
+    <Folder Include="Services\Contents\MeditationContent\Models\" />
+    <Folder Include="Services\Contents\MusicContent\Models\" />
+  </ItemGroup>
+
 </Project>
