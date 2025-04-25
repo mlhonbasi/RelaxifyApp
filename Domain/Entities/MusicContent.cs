@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class MusicContent
+    public class MusicContent : BaseEntity
     {
-        public Guid Id { get; set; }
         public Content Content { get; set; } // Navigation property to Content
         public Guid ContentId { get; set; }
         public MusicCategory Category { get; set; } // Music category (e.g., Relaxation, Nature, etc.)

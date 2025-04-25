@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Nodes;
-using System.Threading.Tasks;
-
-namespace Domain.Entities
+﻿namespace Domain.Entities
 {
-    public class BreathingContent
+    public class BreathingContent : BaseEntity
     {
-        public Guid Id { get; set; }
         public Content Content { get; set; } // Navigation property to Content
         public Guid ContentId { get; set; }
         public int StepCount { get; set; }
