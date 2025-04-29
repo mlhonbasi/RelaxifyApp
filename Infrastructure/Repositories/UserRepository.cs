@@ -6,12 +6,12 @@ namespace Infrastructure.Repositories
 {
 
 
-    public class UserRepository(RelaxifyDbContext _context) : GenericRepository<User>(_context), IUserRepository
+    public class UserRepository(RelaxifyDbContext context) : GenericRepository<User>(context), IUserRepository
     {
         
         public async Task<User> GetUserEmailAsync(string email)
         {
-            return await _context.Users.FirstOrDefaultAsync(x=> x.Email == email);
+            return await context.Users.FirstOrDefaultAsync(x=> x.Email == email);
         }
     }
 }

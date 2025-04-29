@@ -1,7 +1,7 @@
 ﻿using Application.Services.Authentications.Register.Models;
 using Domain.Entities;
 using Domain.Interfaces;
-using BCrypt.Net;
+
 namespace Application.Services.Authentications.Register
 {
     public class RegisterService(IUserRepository userRepository) : IRegisterService

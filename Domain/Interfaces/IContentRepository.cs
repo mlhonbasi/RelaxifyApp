@@ -1,6 +1,8 @@
-﻿namespace Domain.Interfaces
+﻿using Domain.Entities;
+
+namespace Domain.Interfaces
 {
-    public interface IContentRepository
+    public interface IContentRepository : IRepository<Content>
     {
         
     }

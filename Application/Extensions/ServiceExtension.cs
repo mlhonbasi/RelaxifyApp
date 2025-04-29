@@ -2,8 +2,8 @@
 using Application.Services.Authentications.Login;
 using Application.Services.Authentications.Register;
 using Microsoft.Extensions.Configuration;
-using Application.Services.Contents.Content;
-using Application.Services.Contents.BreathingContent;
+using Application.Services.Contents.MainContent;
+using Application.Services.Contents.BreathingContents;
 using Application.Services.Contents.MeditationContent;
 using Application.Services.Contents.MusicContent;
 using Application.Services.Contents.GameContent;

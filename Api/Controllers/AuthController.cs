@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
 {
+    [ApiController]
     [Route("api/[controller]")]
     public class AuthController(IRegisterService registerService, ILoginService loginService) : ControllerBase
     {
