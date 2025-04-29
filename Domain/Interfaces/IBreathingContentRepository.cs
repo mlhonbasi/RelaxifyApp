@@ -1,6 +1,8 @@
-﻿namespace Domain.Interfaces
+﻿using Domain.Entities;
+
+namespace Domain.Interfaces
 {
-    public interface IBreathingContentRepository
+    public interface IBreathingContentRepository : IRepository<BreathingContent>
     {
     }
 }

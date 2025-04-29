@@ -5,20 +5,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
-    public class GenericRepository<T>(RelaxifyDbContext _context) : IRepository<T> where T : BaseEntity
+    public class GenericRepository<T>(RelaxifyDbContext context) : IRepository<T> where T : BaseEntity
     {
 
         public async Task AddAsync(T entity)
         {
-            await _context.Set<T>().AddAsync(entity);
-            await _context.SaveChangesAsync();
+            await context.Set<T>().AddAsync(entity);
+            await context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(Guid id)
         {
-            var entity = await _context.Set<T>().FindAsync(id);
-            _context.Set<T>().Remove(entity);
-            await _context.SaveChangesAsync();
+            var entity = await context.Set<T>().FindAsync(id);
+            context.Set<T>().Remove(entity);
+            await context.SaveChangesAsync();
         }
 
         public Task<IEnumerable<T>> GetAllAsync()
@@ -28,13 +28,13 @@ namespace Infrastructure.Repositories
 
         public async Task<T> GetByIdAsync(Guid id)
         {
-            return await _context.Set<T>().AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+            return await context.Set<T>().AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task UpdateAsync(T entity)
         {
-            _context.Set<T>().Update(entity);
-            await _context.SaveChangesAsync();
+            context.Set<T>().Update(entity);
+            await context.SaveChangesAsync();
         }
     }
 }
