@@ -17,7 +17,7 @@ namespace Application.Services.Contents.MeditationContents
                 ContentId = contentId,
                 Steps = request.Steps
             };
-            await meditationContentRepository.AddAsync(meditationContent); // Save the breathing content
+            await meditationContentRepository.AddAsync(meditationContent); // Save the meditation content
         }
         public async Task<MeditationContentDto> GetByContentIdAsync(Guid contentId)
         {

@@ -21,7 +21,6 @@
 
   <ItemGroup>
     <Folder Include="Services\Contents\GameContent\Models\" />
-    <Folder Include="Services\Contents\MusicContent\Models\" />
   </ItemGroup>
 
 </Project>
