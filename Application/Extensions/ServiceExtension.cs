@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Application.Services.Contents.MainContent;
 using Application.Services.Contents.BreathingContents;
 using Application.Services.Contents.MeditationContents;
-using Application.Services.Contents.MusicContent;
+using Application.Services.Contents.MusicContents;
 using Application.Services.Contents.GameContent;
 
 namespace Application.Extensions
