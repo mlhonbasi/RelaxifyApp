@@ -1,6 +1,5 @@
 ﻿using Application.Services.Contents.BreathingContents;
 using Application.Services.Contents.BreathingContents.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers

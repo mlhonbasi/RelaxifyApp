@@ -1,8 +1,10 @@
-﻿using Domain.Interfaces;
+﻿using Domain.Entities;
+using Domain.Interfaces;
+using Infrastructure.Context;
 
 namespace Infrastructure.Repositories
 {
-    public class MeditationContentRepository : IMeditationContentRepository
+    public class MeditationContentRepository(RelaxifyDbContext context) :GenericRepository<MeditationContent>(context), IMeditationContentRepository
     {
     }
 }
