@@ -10,6 +10,7 @@ namespace Domain.Enums
     {
         Visual,
         HandInteraction,
+        deneme
         //...
     }
 }
