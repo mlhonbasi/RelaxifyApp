@@ -12,10 +12,6 @@ namespace Application.Services.Contents.BreathingContents
     {
         public async Task CreateBreathingContentAsync(CreateBreathingContentRequest request)
         {
-            int deneme = 0;
-            int ab = 0;
-            int c = 0;
-            int asv = 0;
             var contentId = await contentService.CreateContentAsync(request.ContentRequest); //Create the main content first then get the ID
 
             var breathingContent = new BreathingContent
