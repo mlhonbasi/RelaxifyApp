@@ -14,6 +14,7 @@ namespace Application.Services.Authentications.Login
     {
         public async Task<LoginResponse> LoginAsync(LoginRequest request)
         {
+            int a = 0;
             var user = await userRepository.GetUserEmailAsync(request.Email);
             if(user == null)
             {
