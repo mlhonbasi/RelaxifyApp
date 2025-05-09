@@ -43,7 +43,7 @@ namespace Application.Services.Contents.BreathingContents
         public async Task UpdateAsync(Guid contentId, UpdateBreathingContentRequest request)
         {
             var breathingContent = await breathingContentRepository.GetByIdAsync(contentId);
-
+            int a = 0;
             if (breathingContent == null)
             {
                 throw new Exception($"Breathing content with ID {contentId} not found.");
