@@ -18,6 +18,7 @@ namespace Api
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddRepositories(builder.Configuration);
+            builder.Services.AddHttpContextAccessor();
             builder.Services.AddServices(builder.Configuration);
 
             // ?? JWT Authentication yapýlandýrmasý
