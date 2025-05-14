@@ -23,6 +23,7 @@ namespace Infrastructure.Context
         public virtual DbSet<BreathingContent> BreathingContents { get; set; }
         public virtual DbSet<MusicContent> MusicContents { get; set; }
         public virtual DbSet<GameContent> GameContents { get; set; }
+        public virtual DbSet<UserFavorite> UserFavorites { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

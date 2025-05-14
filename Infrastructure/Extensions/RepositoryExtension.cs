@@ -31,6 +31,7 @@ namespace Infrastructure.Extensions
             services.AddScoped<IMeditationContentRepository, MeditationContentRepository>();
             services.AddScoped<IMusicContentRepository, MusicContentRepository>();  
             services.AddScoped<IGameContentRepository, GameContentRepository>();
+            services.AddScoped<IFavoriteRepository, FavoriteRepository>();
 
             services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 
