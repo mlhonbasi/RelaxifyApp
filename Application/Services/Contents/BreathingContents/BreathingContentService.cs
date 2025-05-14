@@ -1,6 +1,7 @@
 ﻿using Application.DTOs;
 using Application.Services.Contents.BreathingContents.Models;
 using Application.Services.Contents.MainContent;
+using Application.Services.Users;
 using Domain.Entities;
 using Domain.Interfaces;
 
@@ -8,7 +9,7 @@ using Domain.Interfaces;
 
 namespace Application.Services.Contents.BreathingContents
 {
-    public class BreathingContentService(IContentService contentService, IBreathingContentRepository breathingContentRepository) : IBreathingContentService
+    public class BreathingContentService(IContentService contentService, IUserService userService, IBreathingContentRepository breathingContentRepository) : IBreathingContentService
     {
         public async Task CreateBreathingContentAsync(CreateBreathingContentRequest request)
         {
@@ -57,6 +58,22 @@ namespace Application.Services.Contents.BreathingContents
         public async Task DeleteAsync(Guid contentId)
         {
             await contentService.DeleteAsync(contentId); //Soft delete main content
+        }
+        public async Task<List<BreathingContentListDto>> GetAllAsync()
+        {
+            var favorites = await userService.GetUserFavorites();
+            var contents = await breathingContentRepository.GetWithContentAsync();
+
+            return contents.Select(b => new BreathingContentListDto
+            {
+                ContentId = b.ContentId,
+                Title = b.Content.Title,
+                Description = b.Content.Description,
+                ImagePath = b.Content.ImagePath,
+                StepCount = b.StepCount,
+                DurationInSeconds = b.Duration,
+                IsFavorite = favorites.Contains(b.ContentId)
+            }).ToList();
         }
     }
 }

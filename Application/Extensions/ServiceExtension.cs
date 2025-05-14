@@ -8,6 +8,7 @@ using Application.Services.Contents.MeditationContents;
 using Application.Services.Contents.MusicContents;
 using Application.Services.Contents.GameContent;
 using Application.Services.Profile;
+using Application.Services.Users;
 
 namespace Application.Extensions
 {
@@ -19,6 +20,7 @@ namespace Application.Extensions
             services.AddScoped<ILoginService, LoginService>();
             services.AddScoped<IRegisterService, RegisterService>();
             services.AddScoped<IProfileService, ProfileService>();
+            services.AddScoped<IUserService, UserService>();
 
             services.AddScoped<IContentService, ContentService>();
             services.AddScoped<IBreathingContentService, BreathingContentService>();
