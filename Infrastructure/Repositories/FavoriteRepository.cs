@@ -12,6 +12,11 @@ namespace Infrastructure.Repositories
 {
     public class FavoriteRepository(RelaxifyDbContext context) : GenericRepository<UserFavorite>(context), IFavoriteRepository
     {
+        public async Task<UserFavorite> GetFavoriteByUserAndContentId(Guid userId, Guid contentId)
+        {
+            return await context.UserFavorites.FirstOrDefaultAsync(f => f.UserId == userId && f.ContentId == contentId);
+        }
+
         public async Task<List<Guid>> GetFavoritesByUserIdAsync(Guid userId)
         {
             return await context.UserFavorites

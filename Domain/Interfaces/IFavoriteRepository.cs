@@ -10,6 +10,6 @@ namespace Domain.Interfaces
     public interface IFavoriteRepository :IRepository<UserFavorite>
     {
         Task<List<Guid>> GetFavoritesByUserIdAsync(Guid userId);
-
+        Task<UserFavorite> GetFavoriteByUserAndContentId(Guid userId, Guid contentId);
     }
 }
