@@ -36,5 +36,11 @@ namespace Infrastructure.Repositories
             context.Set<T>().Update(entity);
             await context.SaveChangesAsync();
         }
+
+        public async Task HardDeleteAsync(T entity)
+        {
+            context.Set<T>().Remove(entity);
+            await context.SaveChangesAsync();
+        }
     }
 }

@@ -2,10 +2,11 @@
 using Application.Services.Contents.MainContent.Models;
 using Domain.Interfaces;
 using Domain.Entities;
+using Application.Services.Users;
 
 namespace Application.Services.Contents.MainContent
 {
-    public class ContentService(IContentRepository contentRepository) : IContentService
+    public class ContentService(IContentRepository contentRepository,   IFavoriteRepository favoriteRepository ,IUserService userService) : IContentService
     {
         public async Task<Guid> CreateContentAsync(CreateContentRequest request)
         {
@@ -68,7 +69,7 @@ namespace Application.Services.Contents.MainContent
                 ImageUrl = content.ImagePath
             };
         }
-
+       
         public async Task UpdateAsync(Guid id, UpdateContentRequest request)
         {
             var content = await contentRepository.GetByIdAsync(id);
@@ -82,6 +83,27 @@ namespace Application.Services.Contents.MainContent
             content.IsActive = request.IsActive;
             content.ImagePath = request.ImagePath;
             await contentRepository.UpdateAsync(content);
+        }
+        public async Task<(bool IsSuccess, bool IsFavorite)> ToggleFavoriteAsync(Guid contentId)
+        {
+            var userId = await userService.GetUserIdAsync();
+            var existingFavorite = await favoriteRepository.GetFavoriteByUserAndContentId(userId, contentId);
+
+            if (existingFavorite != null)
+            {
+                await favoriteRepository.HardDeleteAsync(existingFavorite);
+                return (true, false); // Favoriden kaldırıldı
+            }
+            var newFavorite = new UserFavorite
+            {
+                Id = Guid.NewGuid(),
+                UserId = userId,
+                ContentId = contentId,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            await favoriteRepository.AddAsync(newFavorite);
+            return (true, true); // Favoriye eklendi
         }
     }
 }
