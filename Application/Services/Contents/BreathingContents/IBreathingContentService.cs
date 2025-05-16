@@ -10,5 +10,6 @@ namespace Application.Services.Contents.BreathingContents
         Task UpdateAsync(Guid contentId, UpdateBreathingContentRequest request);
         Task DeleteAsync(Guid contentId);
         Task<List<BreathingContentListDto>> GetAllAsync();
+        Task<BreathingDetailDto> GetByIdAsync(Guid contentId);
     }
 }
