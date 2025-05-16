@@ -10,9 +10,17 @@ namespace Infrastructure.Repositories
         public async Task<IList<BreathingContent>> GetWithContentAsync()
         {
             return await context.BreathingContents
-            .Include(b => b.Content)
-            .Where(b => b.Content.IsActive)
-            .ToListAsync();
+                .Include(b => b.Content)
+                .Where(b => b.Content.IsActive)
+                .ToListAsync();
+        }
+        public async Task<BreathingContent?> GetWithContentByIdAsync(Guid id)
+        {
+            return await context.BreathingContents
+                .Include(b => b.Content)
+                .Where(b => b.ContentId == id)
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
         }
     }
 }

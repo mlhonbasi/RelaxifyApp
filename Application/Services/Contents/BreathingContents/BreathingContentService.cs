@@ -4,6 +4,7 @@ using Application.Services.Contents.MainContent;
 using Application.Services.Users;
 using Domain.Entities;
 using Domain.Interfaces;
+using System.Text.Json;
 
 
 
@@ -74,6 +75,29 @@ namespace Application.Services.Contents.BreathingContents
                 DurationInSeconds = b.Duration,
                 IsFavorite = favorites.Contains(b.ContentId)
             }).ToList();
+        }
+        public async Task<BreathingDetailDto> GetByIdAsync(Guid contentId)
+        {
+            var breathing = await breathingContentRepository
+                .GetWithContentByIdAsync(contentId); // Include(Content) yapılmış hali
+
+            if (breathing == null || breathing.Content == null)
+                throw new Exception("İçerik bulunamadı");
+
+            var steps = JsonSerializer.Deserialize<List<BreathingStepDto>>(
+            breathing.Steps ?? "[]",
+            new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
+            );
+
+            return new BreathingDetailDto
+            {
+                ContentId = breathing.ContentId,
+                Title = breathing.Content.Title,
+                Description = breathing.Content.Description,
+                StepCount = breathing.StepCount,
+                DurationInSeconds = breathing.Duration,
+                Steps = steps ?? new()
+            };
         }
     }
 }

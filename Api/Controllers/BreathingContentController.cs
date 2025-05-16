@@ -15,6 +15,14 @@ namespace Api.Controllers
             var result = await breathingContentService.GetAllAsync();
             return Ok(result);
         }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            var result = await breathingContentService.GetByIdAsync(id);
+            if (result == null)
+                return NotFound(new { success = false, message = "İçerik bulunamadı." });
+            return Ok(result);
+        }
         [HttpPost("toggle-favorite")]
         public async Task<IActionResult> ToggleFavorite([FromBody] ToggleFavoriteRequest request)
         {
