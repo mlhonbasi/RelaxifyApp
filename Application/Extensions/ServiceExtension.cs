@@ -9,6 +9,8 @@ using Application.Services.Contents.MusicContents;
 using Application.Services.Contents.GameContent;
 using Application.Services.Profile;
 using Application.Services.Users;
+using Domain.Interfaces;
+using Application.Services.ContentLogs;
 
 namespace Application.Extensions
 {
@@ -27,6 +29,7 @@ namespace Application.Extensions
             services.AddScoped<IMeditationContentService, MeditationContentService>();
             services.AddScoped<IMusicContentService, MusicContentService>();
             services.AddScoped<IGameContentService, GameContentService>();
+            services.AddScoped<IUserContentLogService, UserContentLogService>();
 
             return services;
         }
