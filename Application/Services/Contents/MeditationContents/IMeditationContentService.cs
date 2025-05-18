@@ -10,5 +10,8 @@ namespace Application.Services.Contents.MeditationContents
         Task<MeditationContentDto> GetByContentIdAsync(Guid contentId);
         Task UpdateAsync(Guid contentId, UpdateMeditationContentRequest request);
         Task DeleteAsync(Guid contentId);
+        Task<List<MeditationContentListDto>> GetAllAsync();
+        Task<MeditationDetailDto> GetByIdAsync(Guid contentId);
+
     }
 }
