@@ -1,30 +1,20 @@
 ﻿using Application.Services.Contents.MainContent.Models;
 using Application.Services.Contents.MainContent;
-using Application.Services.Contents.MeditationContents;
+using Application.Services.Contents.MusicContents;
 using Application.Services.Users;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
-{    
+{ 
     [ApiController]
     [Route("api/[controller]")]
-    public class MeditationContentController(IMeditationContentService meditationContentService, IContentService contentService) : ControllerBase
+    public class MusicContentController(IMusicContentService musicContentService, IContentService contentService) : ControllerBase
     {
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAllAsync()
         {
-            var result = await meditationContentService.GetAllAsync();
-            return Ok(result);
-        }
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(Guid id)
-        {
-            var result = await meditationContentService.GetByIdAsync(id);
-
-            if (result == null)
-                return NotFound();
-
+            var result = await musicContentService.GetAllAsync();
             return Ok(result);
         }
         [HttpPost("toggle-favorite")]
