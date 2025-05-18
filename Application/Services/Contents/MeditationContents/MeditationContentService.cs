@@ -1,12 +1,14 @@
 ﻿using Application.DTOs;
 using Application.Services.Contents.MainContent;
 using Application.Services.Contents.MeditationContents.Models;
+using Application.Services.Users;
 using Domain.Entities;
 using Domain.Interfaces;
+using System.Text.Json;
 
 namespace Application.Services.Contents.MeditationContents
 {
-    public class MeditationContentService(IContentService contentService, IMeditationContentRepository meditationContentRepository) : IMeditationContentService
+    public class MeditationContentService(IContentService contentService, IUserService userService, IMeditationContentRepository meditationContentRepository) : IMeditationContentService
     {
         public async Task CreateMeditationContentAsync(CreateMeditationContentRequest request)
         {
@@ -45,6 +47,40 @@ namespace Application.Services.Contents.MeditationContents
         public async Task DeleteAsync(Guid contentId)
         {
             await contentService.DeleteAsync(contentId); //Soft delete main content   
+        }
+
+        public async Task<List<MeditationContentListDto>> GetAllAsync()
+        {
+            var favorites = await userService.GetUserFavorites();
+            var contents = await meditationContentRepository.GetWithContentAsync();
+
+            return contents.Select(x => new MeditationContentListDto
+            {
+                ContentId = x.ContentId,
+                Title = x.Content.Title,
+                Description = x.Content.Description,
+                ImagePath = x.Content.ImagePath,
+                IsFavorite = favorites.Contains(x.ContentId),
+            }).ToList();
+        }
+        public async Task<MeditationDetailDto> GetByIdAsync(Guid contentId)
+        {
+            var meditation = await meditationContentRepository
+                .GetWithContentByIdAsync(contentId); // Include(Content) yapılmış hali
+
+            if (meditation == null || meditation.Content == null)
+                throw new Exception("Meditasyon içeriği bulunamadı");
+
+            var steps = JsonSerializer.Deserialize<List<MeditationStepDto>>(meditation.Steps ?? "[]");
+
+            return new MeditationDetailDto
+            {
+                ContentId = meditation.ContentId,
+                Title = meditation.Content.Title,
+                Description = meditation.Content.Description,
+                ImagePath = meditation.Content.ImagePath,
+                Steps = steps ?? new()
+            };
         }
     }
 

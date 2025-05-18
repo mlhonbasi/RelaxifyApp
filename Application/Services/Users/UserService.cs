@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Application.Services.Users
 {
-    public class UserService(IUserRepository userRepository, IFavoriteRepository favoriteRepository, IHttpContextAccessor httpContextAccessor) : IUserService
+    public class UserService(IFavoriteRepository favoriteRepository, IHttpContextAccessor httpContextAccessor) : IUserService
     {
         public async Task<Guid> GetUserIdAsync()
         {
