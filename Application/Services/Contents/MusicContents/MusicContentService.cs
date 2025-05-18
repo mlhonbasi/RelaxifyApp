@@ -1,12 +1,13 @@
 ﻿using Application.DTOs;
 using Application.Services.Contents.MainContent;
 using Application.Services.Contents.MusicContents.Models;
+using Application.Services.Users;
 using Domain.Entities;
 using Domain.Interfaces;
 
 namespace Application.Services.Contents.MusicContents
 {
-    public class MusicContentService(IContentService contentService, IMusicContentRepository musicContentRepository) : IMusicContentService
+    public class MusicContentService(IContentService contentService, IUserService userService, IMusicContentRepository musicContentRepository) : IMusicContentService
     {
         public async Task CreateMusicContentAsync(CreateMusicContentRequest request)
         {
@@ -50,6 +51,21 @@ namespace Application.Services.Contents.MusicContents
         public async Task DeleteAsync(Guid contentId)
         {
             await contentService.DeleteAsync(contentId); //Soft delete main content   
+        }
+
+        public async Task<List<MusicListDto>> GetAllAsync()
+        {
+            var favorites = await userService.GetUserFavorites();
+            var contents = await musicContentRepository.GetWithContentAsync();
+
+            return contents.Select(x => new MusicListDto
+            {
+                ContentId = x.ContentId,
+                Title = x.Content.Title,
+                ImagePath = x.Content.ImagePath,
+                FilePath = x.FilePath,
+                IsFavorite = favorites.Contains(x.ContentId),
+            }).ToList();
         }
     }
 }

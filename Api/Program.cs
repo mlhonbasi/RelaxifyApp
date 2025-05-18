@@ -54,6 +54,7 @@ namespace Api
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            app.UseStaticFiles();
 
             app.UseCors("AllowAll");
             app.UseHttpsRedirection();

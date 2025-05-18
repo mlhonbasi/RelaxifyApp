@@ -9,5 +9,7 @@ namespace Application.Services.Contents.MusicContents
         Task<MusicContentDto> GetByContentIdAsync(Guid contentId);
         Task UpdateAsync(Guid contentId, UpdateMusicContentRequest request);
         Task DeleteAsync(Guid contentId);
+        Task<List<MusicListDto>> GetAllAsync();
+
     }
 }
