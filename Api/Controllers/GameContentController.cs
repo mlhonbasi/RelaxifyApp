@@ -1,30 +1,31 @@
-﻿using Application.Services.Contents.MainContent;
+﻿using Application.Services.Contents.GameContent;
+using Application.Services.Contents.MainContent;
 using Application.Services.Contents.MainContent.Models;
-using Application.Services.Contents.MeditationContents;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class MeditationContentController(IMeditationContentService meditationContentService, IContentService contentService) : ControllerBase
+    public class GameContentController(IContentService contentService, IGameContentService gameContentService) : ControllerBase
     {
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var result = await meditationContentService.GetAllAsync();
+            var result = await gameContentService.GetAllAsync();
             return Ok(result);
         }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var result = await meditationContentService.GetByIdAsync(id);
+            var result = await gameContentService.GetByIdAsync(id);
 
             if (result == null)
                 return NotFound();
 
             return Ok(result);
         }
+
         [HttpPost("toggle-favorite")]
         public async Task<IActionResult> ToggleFavorite([FromBody] ToggleFavoriteRequest request)
         {

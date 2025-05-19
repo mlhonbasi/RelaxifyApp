@@ -19,8 +19,4 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Services\Contents\GameContent\Models\" />
-  </ItemGroup>
-
 </Project>
