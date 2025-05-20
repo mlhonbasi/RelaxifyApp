@@ -33,6 +33,9 @@ namespace Infrastructure.Extensions
             services.AddScoped<IGameContentRepository, GameContentRepository>();
             services.AddScoped<IFavoriteRepository, FavoriteRepository>();
             services.AddScoped<IUserContentLogRepository, UserContentLogRepository>();
+            services.AddScoped<IStressAnswerRepository, StressAnswerRepository>();
+            services.AddScoped<IStressQuestionRepository, StressQuestionRepository>();
+            services.AddScoped<IStressTestResultRepository, StressTestResultRepository>();
 
             services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 

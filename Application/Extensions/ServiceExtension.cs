@@ -11,6 +11,8 @@ using Application.Services.Profile;
 using Application.Services.Users;
 using Domain.Interfaces;
 using Application.Services.ContentLogs;
+using Application.Services.Stress;
+using Application.Services.StressTestResult;
 
 namespace Application.Extensions
 {
@@ -30,6 +32,8 @@ namespace Application.Extensions
             services.AddScoped<IMusicContentService, MusicContentService>();
             services.AddScoped<IGameContentService, GameContentService>();
             services.AddScoped<IUserContentLogService, UserContentLogService>();
+            services.AddScoped<IStressService, StressService>();
+            services.AddScoped<IStressTestResultService, StressTestResultService>();
 
             return services;
         }

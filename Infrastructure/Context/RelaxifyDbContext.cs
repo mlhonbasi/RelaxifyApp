@@ -25,7 +25,9 @@ namespace Infrastructure.Context
         public virtual DbSet<GameContent> GameContents { get; set; }
         public virtual DbSet<UserFavorite> UserFavorites { get; set; }
         public virtual DbSet<UserContentLog> UserContentLogs { get; set; }
-
+        public virtual DbSet<StressQuestion> StressQuestions { get; set; }
+        public virtual DbSet<StressAnswer> StressAnswers{ get; set; }
+        public virtual DbSet<StressTestResult> StressTestResults { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Content>()
