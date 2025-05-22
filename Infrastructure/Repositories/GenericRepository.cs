@@ -21,19 +21,18 @@ namespace Infrastructure.Repositories
             await context.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<T>> GetAllAsync()
+        public async Task<IEnumerable<T>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await context.Set<T>().AsNoTracking().ToListAsync();
         }
 
         public async Task<T> GetByIdAsync(Guid id)
         {
-            return await context.Set<T>().AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+            return await context.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task UpdateAsync(T entity)
         {
-            context.Set<T>().Update(entity);
             await context.SaveChangesAsync();
         }
 

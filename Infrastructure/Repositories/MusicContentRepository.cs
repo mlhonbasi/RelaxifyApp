@@ -14,5 +14,12 @@ namespace Infrastructure.Repositories
                 .Where(b => b.Content.IsActive)
                 .ToListAsync();
         }
+        public async Task<MusicContent?> GetWithContentByIdAsync(Guid id)
+        {
+            return await context.MusicContents
+                .Include(b => b.Content)
+                .Where(b => b.ContentId == id)
+                .FirstOrDefaultAsync();
+        }
     }
 }

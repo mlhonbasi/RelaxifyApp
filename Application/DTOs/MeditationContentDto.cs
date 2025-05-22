@@ -10,5 +10,10 @@ namespace Application.DTOs
     {
         public Guid ContentId { get; set; }
         public string Steps { get; set; }
+
+        public string Title { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public string ImagePath { get; set; } = string.Empty;
+        public bool IsActive { get; set; }
     }
 }

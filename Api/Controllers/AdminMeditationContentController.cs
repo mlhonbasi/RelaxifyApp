@@ -20,9 +20,9 @@ namespace Api.Controllers
         public async Task<IActionResult> GetMeditationContentById(Guid contentId)
         {
             if (contentId == Guid.Empty) { return BadRequest(new { error = "Invalid content ID" }); }
-            var breathingContent = await meditationContentService.GetByContentIdAsync(contentId);
-            if (breathingContent == null) { return NotFound(new { error = "Meditation content not found" }); }
-            return Ok(breathingContent);
+            var meditationContent = await meditationContentService.GetByContentIdAsync(contentId);
+            if (meditationContent == null) { return NotFound(new { error = "Meditation content not found" }); }
+            return Ok(meditationContent);
         }
 
         [HttpPut("{contentId}")]
@@ -40,7 +40,12 @@ namespace Api.Controllers
             return NoContent();
         }
 
-
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await meditationContentService.GetAllAsync();
+            return Ok(result);
+        }
 
     }
 }

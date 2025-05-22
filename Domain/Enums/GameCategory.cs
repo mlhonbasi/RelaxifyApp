@@ -10,6 +10,5 @@ namespace Domain.Enums
     {
         Visual,
         HandInteraction,
-        //...
     }
 }

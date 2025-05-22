@@ -27,9 +27,9 @@ namespace Application.Services.Contents.BreathingContents
         }
         public async Task<BreathingContentDto> GetByContentIdAsync(Guid contentId)
         {
-            var breathingContent = await breathingContentRepository.GetByIdAsync(contentId);
+            var breathingContent = await breathingContentRepository.GetWithContentByIdAsync(contentId);
 
-            if (breathingContent == null)
+            if (breathingContent == null || breathingContent.Content == null)
             {
                 throw new Exception($"Breathing content with ID {contentId} not found.");
             }
@@ -39,12 +39,18 @@ namespace Application.Services.Contents.BreathingContents
                 ContentId = breathingContent.ContentId,
                 StepCount = breathingContent.StepCount,
                 Duration = breathingContent.Duration,
-                Steps = breathingContent.Steps
+                Steps = breathingContent.Steps,
+
+                // Content tablosundan gelenler:
+                Title = breathingContent.Content.Title,
+                Description = breathingContent.Content.Description,
+                ImagePath = breathingContent.Content.ImagePath,
+                IsActive = breathingContent.Content.IsActive
             };
         }
         public async Task UpdateAsync(Guid contentId, UpdateBreathingContentRequest request)
         {
-            var breathingContent = await breathingContentRepository.GetByIdAsync(contentId);
+            var breathingContent = await breathingContentRepository.GetWithContentByIdAsync(contentId);
 
             if (breathingContent == null)
             {
@@ -55,6 +61,7 @@ namespace Application.Services.Contents.BreathingContents
             breathingContent.Steps = request.Steps;
 
             await breathingContentRepository.UpdateAsync(breathingContent);
+            await contentService.UpdateAsync(contentId, request.ContentRequest);
         }
         public async Task DeleteAsync(Guid contentId)
         {

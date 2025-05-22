@@ -12,5 +12,11 @@ namespace Application.DTOs
         public int StepCount { get; set; }
         public int Duration { get; set; }
         public string Steps { get; set; }
+
+        // Content tablosundan gelen alanlar
+        public string Title { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public string ImagePath { get; set; } = string.Empty;
+        public bool IsActive { get; set; }
     }
 }

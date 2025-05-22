@@ -23,7 +23,7 @@ namespace Application.Services.Contents.MeditationContents
         }
         public async Task<MeditationContentDto> GetByContentIdAsync(Guid contentId)
         {
-            var meditationContent = await meditationContentRepository.GetByIdAsync(contentId);
+            var meditationContent = await meditationContentRepository.GetWithContentByIdAsync(contentId);
             if (meditationContent == null)
             {
                 throw new Exception($"Meditation content with ID {contentId} not found.");
@@ -31,18 +31,25 @@ namespace Application.Services.Contents.MeditationContents
             return new MeditationContentDto
             {
                 ContentId = meditationContent.ContentId,
-                Steps = meditationContent.Steps
+                Steps = meditationContent.Steps,
+
+                Title = meditationContent.Content.Title,
+                Description = meditationContent.Content.Description,
+                ImagePath = meditationContent.Content.ImagePath,
+                IsActive = meditationContent.Content.IsActive,
             };
         }
         public async Task UpdateAsync(Guid contentId, UpdateMeditationContentRequest request)
         {
-            var meditationContent = await meditationContentRepository.GetByIdAsync(contentId);
+            var meditationContent = await meditationContentRepository.GetWithContentByIdAsync(contentId);
             if (meditationContent == null)
             {
                 throw new Exception($"Meditation content with ID {contentId} not found.");
             }
             meditationContent.Steps = request.Steps;
+
             await meditationContentRepository.UpdateAsync(meditationContent);
+            await contentService.UpdateAsync(contentId, request.ContentRequest);
         }
         public async Task DeleteAsync(Guid contentId)
         {

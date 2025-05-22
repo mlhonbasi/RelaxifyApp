@@ -45,7 +45,7 @@ namespace Application.Services.Contents.GameContent
 
         public async Task<GameContentDto> GetByContentIdAsync(Guid contentId)
         {
-            var gameContent = await gameContentRepository.GetByIdAsync(contentId);
+            var gameContent = await gameContentRepository.GetWithContentByIdAsync(contentId);
 
             if (gameContent == null)
             {
@@ -56,6 +56,12 @@ namespace Application.Services.Contents.GameContent
             {
                 ContentId = gameContent.ContentId,
                 KeyName = gameContent.KeyName,
+
+                Category = gameContent.Category,
+                Title = gameContent.Content.Title,
+                Description = gameContent.Content.Description,
+                ImagePath = gameContent.Content.ImagePath,
+                IsActive = gameContent.Content.IsActive,
             };
         }
 
@@ -74,9 +80,17 @@ namespace Application.Services.Contents.GameContent
             };
         }
 
-        public Task UpdateAsync(Guid contentId, UpdateGameContentRequest request)
+        public async Task UpdateAsync(Guid contentId, UpdateGameContentRequest request)
         {
-            throw new NotImplementedException();
+            var gameContent = await gameContentRepository.GetWithContentByIdAsync(contentId);
+            if (gameContent == null)
+                throw new Exception($"Game content with ID {contentId} not found.");
+
+            gameContent.KeyName = request.KeyName;
+            gameContent.Category = request.GameCategory;
+
+            await gameContentRepository.UpdateAsync(gameContent);
+            await contentService.UpdateAsync(contentId, request.ContentRequest);
         }
     }
 }
