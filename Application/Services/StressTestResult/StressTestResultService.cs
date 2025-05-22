@@ -24,5 +24,9 @@ namespace Application.Services.StressTestResult
             return await stressTestResultRepository.GetUserResultsAsync(userId);
         }
 
+        public async Task<Domain.Entities.StressTestResult?> GetLastResultAsync(Guid userId)
+        {
+            return await stressTestResultRepository.GetLastUserTestResult(userId);
+        }
     }
 }

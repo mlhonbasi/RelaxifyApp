@@ -6,6 +6,7 @@ namespace Application.Services.StressTestResult
     {
         Task SaveResultAsync(Guid userId, StressTestResultRequest request);
         Task<IList<Domain.Entities.StressTestResult>> GetUserResultsAsync(Guid userId);
+        Task<Domain.Entities.StressTestResult?> GetLastResultAsync(Guid userId);
 
     }
 }

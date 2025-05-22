@@ -5,5 +5,6 @@ namespace Domain.Interfaces
     public interface IStressTestResultRepository : IRepository<StressTestResult>
     {
         Task<IList<StressTestResult>> GetUserResultsAsync(Guid userId);
+        Task<StressTestResult?> GetLastUserTestResult(Guid userId);
     }
 }
