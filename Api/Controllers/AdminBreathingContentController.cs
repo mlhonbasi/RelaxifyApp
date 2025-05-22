@@ -39,6 +39,12 @@ namespace Api.Controllers
             await breathingContentService.DeleteAsync(contentId);
             return NoContent();
         }
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await breathingContentService.GetAllAsync();
+            return Ok(result);
+        }
     }
 
 }

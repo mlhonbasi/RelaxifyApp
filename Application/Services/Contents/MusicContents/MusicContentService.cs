@@ -23,7 +23,7 @@ namespace Application.Services.Contents.MusicContents
         }
         public async Task<MusicContentDto> GetByContentIdAsync(Guid contentId)
         {
-            var musicContent = await musicContentRepository.GetByIdAsync(contentId);
+            var musicContent = await musicContentRepository.GetWithContentByIdAsync(contentId);
             if (musicContent == null)
             {
                 throw new Exception($"Music content with ID {contentId} not found.");
@@ -33,12 +33,17 @@ namespace Application.Services.Contents.MusicContents
                 ContentId = musicContent.ContentId,
                 Category = musicContent.Category,
                 FilePath = musicContent.FilePath,
-                Duration = musicContent.Duration
+                Duration = musicContent.Duration,
+
+                Title = musicContent.Content.Title,
+                Description = musicContent.Content.Description,
+                ImagePath = musicContent.Content.ImagePath,
+                IsActive = musicContent.Content.IsActive
             };
         }
         public async Task UpdateAsync(Guid contentId, UpdateMusicContentRequest request)
         {
-            var musicContent = await musicContentRepository.GetByIdAsync(contentId);
+            var musicContent = await musicContentRepository.GetWithContentByIdAsync(contentId);
             if (musicContent == null)
             {
                 throw new Exception($"Music content with ID {contentId} not found.");
@@ -46,7 +51,9 @@ namespace Application.Services.Contents.MusicContents
             musicContent.Duration = request.Duration;
             musicContent.FilePath = request.FilePath;
             musicContent.Category = request.Category;
+
             await musicContentRepository.UpdateAsync(musicContent);
+            await contentService.UpdateAsync(contentId, request.ContentRequest);
         }
         public async Task DeleteAsync(Guid contentId)
         {

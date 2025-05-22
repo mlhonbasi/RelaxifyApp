@@ -10,7 +10,6 @@ namespace Application.Services.Contents.MainContent
         Task<List<ContentDto>> GetAllAsync();
         Task UpdateAsync(Guid id, UpdateContentRequest request);
         Task DeleteAsync(Guid id);
-        //Soft delete eklenebilir...
         Task<(bool IsSuccess, bool IsFavorite)> ToggleFavoriteAsync(Guid contentId);
     }
 }

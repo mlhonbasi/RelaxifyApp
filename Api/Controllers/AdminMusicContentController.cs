@@ -6,7 +6,7 @@ namespace Api.Controllers
 {
     [ApiController]
     [Route("api/admin/musiccontents")]
-    public class AdminMusicContentController(IMusicContentService musicContentService) : Controller
+    public class AdminMusicContentController(IMusicContentService musicContentService) : ControllerBase
     {
         [HttpPost]
         public async Task<IActionResult> CreateMusicContent([FromBody] CreateMusicContentRequest request)
@@ -34,10 +34,16 @@ namespace Api.Controllers
         }
 
         [HttpDelete("{contentId}")]
-        public async Task<IActionResult> DeleteMeditationContent(Guid contentId)
+        public async Task<IActionResult> DeleteMusicContent(Guid contentId)
         {
             await musicContentService.DeleteAsync(contentId);
             return NoContent();
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await musicContentService.GetAllAsync();
+            return Ok(result);
         }
 
     }

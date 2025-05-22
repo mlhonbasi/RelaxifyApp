@@ -14,5 +14,10 @@ namespace Application.DTOs
 
         public string FilePath { get; set; }
         public int Duration { get; set; } // Duration in seconds
+
+        public string Title { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public string ImagePath { get; set; } = string.Empty;
+        public bool IsActive { get; set; }
     }
 }

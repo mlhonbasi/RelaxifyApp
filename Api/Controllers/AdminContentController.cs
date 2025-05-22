@@ -44,6 +44,6 @@ namespace Api.Controllers
             await contentService.DeleteAsync(id);
             return NoContent();
         }
-        //BURADAN DEVAM EDECEGİM...
+ 
     }
 }

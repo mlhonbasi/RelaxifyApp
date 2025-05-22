@@ -19,7 +19,6 @@ namespace Infrastructure.Repositories
             return await context.MeditationContents
                .Include(b => b.Content)
                .Where(b => b.ContentId == id)
-               .AsNoTracking()
                .FirstOrDefaultAsync();
         }
     }
