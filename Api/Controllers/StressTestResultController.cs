@@ -31,6 +31,13 @@ namespace Api.Controllers
             return Ok(results);
         }
 
+        [HttpGet("last")]
+        public async Task<IActionResult> GetLastResult()
+        {
+            var userId = await userService.GetUserIdAsync();
+            var result = await stressTestResultService.GetLastResultAsync(userId);
+            return Ok(result);
+        }
 
     }
 }
