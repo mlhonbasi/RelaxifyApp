@@ -24,5 +24,13 @@ namespace Api.Controllers
 
             return Ok(new { success = true });
         }
+
+        [HttpGet("getcategoryusage")]
+        public async Task<IActionResult> GetCategoryUsage()
+        {
+            var userId = await userService.GetUserIdAsync();
+            var result = await logService.GetCategoryUsageAsync(userId);
+            return Ok(result);
+        }
     }
 }
