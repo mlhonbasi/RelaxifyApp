@@ -1,5 +1,6 @@
 ﻿using Application.Services.Contents.MusicContents;
 using Application.Services.Contents.MusicContents.Models;
+using Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
@@ -12,6 +13,7 @@ namespace Api.Controllers
         public async Task<IActionResult> CreateMusicContent([FromBody] CreateMusicContentRequest request)
         {
             if (request == null) { return BadRequest(new { error = "Invalid request" }); }
+            request.ContentRequest.Category = ContentCategory.Music;
             await musicContentService.CreateMusicContentAsync(request);
             return NoContent();
         }

@@ -1,5 +1,6 @@
 ﻿using Application.Services.Contents.MeditationContents;
 using Application.Services.Contents.MeditationContents.Models;
+using Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
@@ -12,6 +13,7 @@ namespace Api.Controllers
         public async Task<IActionResult> CreateMeditationContent([FromBody] CreateMeditationContentRequest request)
         {
             if (request == null) { return BadRequest(new { error = "Invalid request" }); }
+            request.ContentRequest.Category = ContentCategory.Meditation;
             await meditationContentService.CreateMeditationContentAsync(request);
             return NoContent();
         }
