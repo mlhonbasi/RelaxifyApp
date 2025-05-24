@@ -13,6 +13,7 @@ using Domain.Interfaces;
 using Application.Services.ContentLogs;
 using Application.Services.Stress;
 using Application.Services.StressTestResult;
+using Application.Services.Goal;
 
 namespace Application.Extensions
 {
@@ -34,6 +35,8 @@ namespace Application.Extensions
             services.AddScoped<IUserContentLogService, UserContentLogService>();
             services.AddScoped<IStressService, StressService>();
             services.AddScoped<IStressTestResultService, StressTestResultService>();
+            services.AddScoped<IUserGoalService, UserGoalService>();
+
 
             return services;
         }

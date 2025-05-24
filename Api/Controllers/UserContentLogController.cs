@@ -1,4 +1,5 @@
 ﻿using Application.DTOs;
+using Application.Services.Goal;
 using Application.Services.Users;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -8,7 +9,7 @@ namespace Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class UserContentLogController(IUserContentLogService logService, IUserService userService) : ControllerBase
+    public class UserContentLogController(IUserContentLogService logService, IUserService userService, IUserGoalService userGoalService) : ControllerBase
     {
         [HttpPost]
         public async Task<IActionResult> Log([FromBody] LogUsageRequest request)
@@ -102,5 +103,45 @@ namespace Api.Controllers
                 DailyAverageMinutes = dailyAverage
             });
         }
+        [HttpGet("progress")]
+        public async Task<ActionResult<List<ProgressStatsDto>>> GetProgressStats()
+        {
+            var userId = await userService.GetUserIdAsync();
+            var logs = await logService.GetUserLogsAsync(userId);
+            var goals = await userGoalService.GetGoalsForUserAsync(userId);
+
+            var now = DateTime.UtcNow;
+            var last7Days = logs
+                .Where(x => x.CreatedAt >= now.AddDays(-7))
+                .ToList();
+
+            var result = new List<ProgressStatsDto>();
+
+            foreach (var goal in goals)
+            {
+                var categoryLogs = last7Days
+                    .Where(l => l.Category == goal.Category)
+                    .ToList();
+
+                var usedDays = categoryLogs
+                    .Select(l => l.CreatedAt.Date)
+                    .Distinct()
+                    .Count();
+
+                var usedMinutes = categoryLogs.Sum(l => l.DurationInSeconds) / 60;
+
+                result.Add(new ProgressStatsDto
+                {
+                    Category = goal.Category,
+                    UsedDays = usedDays,
+                    UsedMinutes = usedMinutes,
+                    TargetDays = goal.TargetDays,
+                    TargetMinutes = goal.TargetMinutes
+                });
+            }
+
+            return Ok(result);
+        }
+
     }
 }
