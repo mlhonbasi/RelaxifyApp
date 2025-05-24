@@ -36,6 +36,7 @@ namespace Infrastructure.Extensions
             services.AddScoped<IStressAnswerRepository, StressAnswerRepository>();
             services.AddScoped<IStressQuestionRepository, StressQuestionRepository>();
             services.AddScoped<IStressTestResultRepository, StressTestResultRepository>();
+            services.AddScoped<IUserGoalRepository, UserGoalRepository>();
 
             services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 
