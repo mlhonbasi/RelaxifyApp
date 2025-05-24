@@ -33,5 +33,9 @@ namespace Application.Services.ContentLogs
             };
             await userContentLogRepository.AddAsync(log);
         }
+        public async Task<List<UserContentLog>> GetUserLogsAsync(Guid userId)
+        {
+            return await userContentLogRepository.GetLogsByUserIdAsync(userId);
+        }
     }
 }
