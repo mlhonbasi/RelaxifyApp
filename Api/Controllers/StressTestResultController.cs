@@ -6,6 +6,7 @@ using Domain.Entities;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace Api.Controllers
 {   
@@ -26,13 +27,43 @@ namespace Api.Controllers
                 message = "Test sonucu başarıyla kaydedildi."
             });
         }
+
         [HttpGet("user-results")]
-        public async Task<IActionResult> GetUserResults()
+        public async Task<IActionResult> GetUserResults([FromQuery] string filter = "weekly")
         {
             var userId = await userService.GetUserIdAsync();
-            var results = await stressTestResultService.GetUserResultsAsync(userId);
-            return Ok(results);
+            var allResults = await stressTestResultService.GetUserResultsAsync(userId);
+
+            var trTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Turkey Standard Time");
+            DateTime nowTr = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, trTimeZone);
+
+            IEnumerable<StressTestResult> filteredResults = filter.ToLower() switch
+            {
+                "daily" => allResults.Where(r =>
+                {
+                    var createdTr = TimeZoneInfo.ConvertTimeFromUtc(r.CreatedAt, trTimeZone);
+                    return createdTr >= nowTr.Date && createdTr < nowTr.Date.AddDays(1);
+                }),
+
+                "weekly" => allResults.Where(r =>
+                {
+                    var createdTr = TimeZoneInfo.ConvertTimeFromUtc(r.CreatedAt, trTimeZone);
+                    return createdTr >= nowTr.Date.AddDays(-7);
+                }),
+
+                "monthly" => allResults.Where(r =>
+                {
+                    var createdTr = TimeZoneInfo.ConvertTimeFromUtc(r.CreatedAt, trTimeZone);
+                    return createdTr >= nowTr.Date.AddMonths(-1);
+                }),
+
+                _ => allResults
+            };
+
+            return Ok(filteredResults.OrderByDescending(r => r.CreatedAt).ToList());
         }
+
+
 
         [HttpGet("last")]
         public async Task<IActionResult> GetLastResult()
@@ -48,14 +79,24 @@ namespace Api.Controllers
             var userId = await userService.GetUserIdAsync();
             var allResults = await stressTestResultService.GetUserResultsAsync(userId);
 
-            var now = DateTime.UtcNow;
+            var trTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Turkey Standard Time");
+            var now = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, trTimeZone);
+
             IEnumerable<StressTestResult> filteredResults = filter.ToLower() switch
             {
-                "daily" => allResults.Where(r => r.CreatedAt.Date == now.Date),
+                "daily" => allResults.Where(r => r.CreatedAt >= now.Date && r.CreatedAt < now.Date.AddDays(1)),
                 "weekly" => allResults.Where(r => r.CreatedAt >= now.AddDays(-7)),
                 "monthly" => allResults.Where(r => r.CreatedAt >= now.AddMonths(-1)),
                 _ => allResults
             };
+
+            foreach (var r in allResults)
+            {
+                var trTimesZone = TimeZoneInfo.FindSystemTimeZoneById("Turkey Standard Time");
+                var trTime = TimeZoneInfo.ConvertTimeFromUtc(r.CreatedAt, trTimeZone);
+                Debug.WriteLine($"📄 CreatedAt (UTC): {r.CreatedAt} → TR: {trTime} (Filter: {filter})");
+            }
+
 
             if (!filteredResults.Any())
                 return Ok(new StressSummaryDto
@@ -76,6 +117,7 @@ namespace Api.Controllers
 
             return Ok(dto);
         }
+
 
 
     }
