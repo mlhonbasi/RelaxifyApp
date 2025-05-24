@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Api.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")] 
+    [Route("api/[controller]")]
     public class UserContentLogController(IUserContentLogService logService, IUserService userService) : ControllerBase
     {
         [HttpPost]
@@ -26,11 +26,81 @@ namespace Api.Controllers
         }
 
         [HttpGet("getcategoryusage")]
-        public async Task<IActionResult> GetCategoryUsage()
+        public async Task<IActionResult> GetCategoryUsage([FromQuery] string filter = "weekly")
         {
             var userId = await userService.GetUserIdAsync();
-            var result = await logService.GetCategoryUsageAsync(userId);
+            var allLogs = await logService.GetUserLogsAsync(userId);
+
+            var now = DateTime.UtcNow;
+            var filteredLogs = filter.ToLower() switch
+            {
+                "daily" => allLogs.Where(x => x.CreatedAt >= now.Date && x.CreatedAt < now.Date.AddDays(1)),
+                "weekly" => allLogs.Where(x => x.CreatedAt >= now.AddDays(-7)),
+                "monthly" => allLogs.Where(x => x.CreatedAt >= now.AddMonths(-1)),
+                _ => allLogs
+            };
+
+            var result = filteredLogs
+                .GroupBy(x => x.Category)
+                .Select(g => new
+                {
+                    Category = g.Key.ToString(),
+                    TotalDuration = g.Sum(x => x.DurationInSeconds)
+                })
+                .ToList();
+
             return Ok(result);
+        }
+
+        [HttpGet("usagestats")]
+        public async Task<ActionResult<UsageStatsDto>> GetUsageStats([FromQuery] string filter = "weekly")
+        {
+            var userId = await userService.GetUserIdAsync();
+            var allLogs = await logService.GetUserLogsAsync(userId);
+
+            var now = DateTime.UtcNow;
+            var filteredLogs = filter.ToLower() switch
+            {
+                "daily" => allLogs.Where(x => x.CreatedAt >= now.Date && x.CreatedAt < now.Date.AddDays(1)),
+                "weekly" => allLogs.Where(x => x.CreatedAt >= now.AddDays(-7)),
+                "monthly" => allLogs.Where(x => x.CreatedAt >= now.AddMonths(-1)),
+                _ => allLogs
+            };
+
+            if (!filteredLogs.Any())
+            {
+                return Ok(new UsageStatsDto
+                {
+                    TotalMinutes = 0,
+                    MostUsedCategory = "Yok",
+                    DailyAverageMinutes = 0
+                });
+            }
+
+            var totalSeconds = filteredLogs.Sum(x => x.DurationInSeconds);
+            var totalMinutes = totalSeconds / 60;
+
+            var mostUsed = filteredLogs
+                .GroupBy(x => x.Category)
+                .OrderByDescending(g => g.Sum(x => x.DurationInSeconds))
+                .FirstOrDefault()?.Key.ToString() ?? "Yok";
+
+            var dailyDivisor = filter.ToLower() switch
+            {
+                "daily" => 1,
+                "weekly" => 7,
+                "monthly" => 30,
+                _ => 7
+            };
+
+            var dailyAverage = totalSeconds / 60 / dailyDivisor;
+
+            return Ok(new UsageStatsDto
+            {
+                TotalMinutes = totalMinutes,
+                MostUsedCategory = mostUsed,
+                DailyAverageMinutes = dailyAverage
+            });
         }
     }
 }

@@ -13,5 +13,12 @@ namespace Infrastructure.Repositories
                 .Where(x => x.UserId == userId)
                 .ToListAsync();
         }
+        public async Task<List<UserContentLog>> GetLogsByUserIdAsync(Guid userId)
+        {
+            return await context.UserContentLogs
+                .Where(log => log.UserId == userId)
+                .OrderByDescending(log => log.CreatedAt)
+                .ToListAsync();
+        }
     }
 }

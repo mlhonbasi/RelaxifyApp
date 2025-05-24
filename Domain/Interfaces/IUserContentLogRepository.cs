@@ -10,5 +10,7 @@ namespace Domain.Interfaces
     public interface IUserContentLogRepository : IRepository<UserContentLog>
     {
         Task<List<UserContentLog>> GetCategoryUsageAsync(Guid userId);
+        Task<List<UserContentLog>> GetLogsByUserIdAsync(Guid userId);
+
     }
 }
