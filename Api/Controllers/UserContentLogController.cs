@@ -124,9 +124,9 @@ namespace Api.Controllers
                     .ToList();
 
                 var usedDays = categoryLogs
-                    .Select(l => l.CreatedAt.Date)
-                    .Distinct()
-                    .Count();
+                    .GroupBy(l => l.CreatedAt.Date)
+                    .Count(g => g.Sum(x => x.DurationInSeconds) >= goal.MinimumDailyMinutes * 60);
+
 
                 var usedMinutes = categoryLogs.Sum(l => l.DurationInSeconds) / 60;
 

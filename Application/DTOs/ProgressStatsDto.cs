@@ -19,6 +19,8 @@ namespace Application.DTOs
 
         public int TargetMinutes { get; set; }
 
+        public List<string> ActiveDates { get; set; } = new(); // string formatta yyyy-MM-dd
+
         public double CompletionRateDays => TargetDays == 0 ? 0 : Math.Min((UsedDays * 100.0) / TargetDays, 100);
 
         public double CompletionRateMinutes => TargetMinutes == 0 ? 0 : Math.Min((UsedMinutes * 100.0) / TargetMinutes, 100);

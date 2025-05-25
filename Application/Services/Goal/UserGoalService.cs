@@ -25,6 +25,7 @@ namespace Application.Services.Goal
             {
                 existingGoal.TargetDays = request.TargetDays;
                 existingGoal.TargetMinutes = request.TargetMinutes;
+                existingGoal.MinimumDailyMinutes = request.MinimumDailyMinutes;
                 await userGoalRepository.UpdateAsync(existingGoal);
             }
             else

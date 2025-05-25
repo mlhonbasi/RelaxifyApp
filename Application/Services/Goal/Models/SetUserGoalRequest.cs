@@ -9,5 +9,6 @@ namespace Application.Services.Goal.Models
         public int TargetDays { get; set; }
 
         public int TargetMinutes { get; set; }
+        public int MinimumDailyMinutes { get; set; } = 1;
     }
 }
