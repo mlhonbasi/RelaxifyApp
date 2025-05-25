@@ -6,5 +6,6 @@ namespace Domain.Interfaces
     {
         Task<List<UserAchievement>> GetByUserIdAsync(Guid userId);
         Task<bool> ExistsAsync(Guid userId, string key);
+        Task<List<UserAchievement>> GetUnseenAchievements(Guid userId);
     }
 }

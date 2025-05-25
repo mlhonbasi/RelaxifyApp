@@ -22,6 +22,13 @@ namespace Api.Controllers
             var achievements = await achievementService.GetUserAchievementsAsync(userId);
             return Ok(achievements);
         }
+        [HttpPost("mark-seen")]
+        public async Task<IActionResult> MarkAchievementsAsSeen()
+        {
+            var userId = await userService.GetUserIdAsync();
+            await achievementService.MarkNewAchievementsAsSeenAsync(userId);
+            return NoContent(); // 204: başarıyla işlendi, ama veri yok
+        }
 
     }
 
