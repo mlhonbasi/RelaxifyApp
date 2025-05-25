@@ -123,11 +123,15 @@ namespace Api.Controllers
                     .Where(l => l.Category == goal.Category)
                     .ToList();
 
-                var usedDays = categoryLogs
-                    .GroupBy(l => l.CreatedAt.Date)
-                    .Count(g => g.Sum(x => x.DurationInSeconds) >= goal.MinimumDailyMinutes * 60);
+                var dailyGroups = categoryLogs
+                    .GroupBy(l => l.CreatedAt.Date);
 
+                var activeDates = dailyGroups
+                    .Where(g => g.Sum(x => x.DurationInSeconds) >= goal.MinimumDailyMinutes * 60)
+                    .Select(g => g.Key.ToString("yyyy-MM-dd"))
+                    .ToList();
 
+                var usedDays = activeDates.Count;
                 var usedMinutes = categoryLogs.Sum(l => l.DurationInSeconds) / 60;
 
                 result.Add(new ProgressStatsDto
@@ -136,9 +140,11 @@ namespace Api.Controllers
                     UsedDays = usedDays,
                     UsedMinutes = usedMinutes,
                     TargetDays = goal.TargetDays,
-                    TargetMinutes = goal.TargetMinutes
+                    TargetMinutes = goal.TargetMinutes,
+                    ActiveDates = activeDates
                 });
             }
+
 
             return Ok(result);
         }
