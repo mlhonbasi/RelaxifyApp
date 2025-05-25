@@ -29,6 +29,7 @@ namespace Infrastructure.Context
         public virtual DbSet<StressAnswer> StressAnswers{ get; set; }
         public virtual DbSet<StressTestResult> StressTestResults { get; set; }
         public virtual DbSet<UserGoal> UserGoals { get; set; }
+        public virtual DbSet<UserAchievement> UserAchievements { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
