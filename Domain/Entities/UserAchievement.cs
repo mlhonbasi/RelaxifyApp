@@ -11,5 +11,6 @@ namespace Domain.Entities
         public Guid UserId { get; set; }
         public string Key { get; set; } = null!; // örn: "FirstStep", "MindPower"
         public DateTime AchievedAt { get; set; } = DateTime.UtcNow;
+        public bool IsSeenByUser { get; set; } = false;
     }
 }

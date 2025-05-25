@@ -15,5 +15,6 @@ namespace Application.DTOs
         public DateTime? AchievedAt { get; set; }
 
         public string Type { get; set; } = "";
+        public bool IsNewThisSession { get; set; } = false;
     }
 }

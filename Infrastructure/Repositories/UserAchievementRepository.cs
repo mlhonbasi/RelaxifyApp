@@ -18,5 +18,12 @@ namespace Infrastructure.Repositories
             return await context.UserAchievements
                 .AnyAsync(x => x.UserId == userId && x.Key == key);
         }
+
+        public async Task<List<UserAchievement>> GetUnseenAchievements(Guid userId)
+        {
+            return await context.UserAchievements
+            .Where(x => x.UserId == userId && !x.IsSeenByUser)
+            .ToListAsync();
+        }
     }
 }
