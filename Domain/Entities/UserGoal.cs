@@ -16,7 +16,7 @@ namespace Domain.Entities
         public int TargetDays { get; set; }            // Haftalık hedef: kaç gün kullanmalı?
 
         public int TargetMinutes { get; set; }         // Hedef süre (dakika)
-
+        public int MinimumDailyMinutes { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }
