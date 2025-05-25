@@ -14,6 +14,7 @@ using Application.Services.ContentLogs;
 using Application.Services.Stress;
 using Application.Services.StressTestResult;
 using Application.Services.Goal;
+using Application.Services.Achievement;
 
 namespace Application.Extensions
 {
@@ -36,7 +37,7 @@ namespace Application.Extensions
             services.AddScoped<IStressService, StressService>();
             services.AddScoped<IStressTestResultService, StressTestResultService>();
             services.AddScoped<IUserGoalService, UserGoalService>();
-
+            services.AddScoped<IAchievementService, AchievementService>();
 
             return services;
         }

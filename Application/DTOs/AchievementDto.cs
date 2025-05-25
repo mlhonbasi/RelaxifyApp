@@ -13,5 +13,7 @@ namespace Application.DTOs
         public string Description { get; set; } = "";
         public bool Achieved { get; set; } = false;
         public DateTime? AchievedAt { get; set; }
+
+        public string Type { get; set; } = "";
     }
 }
