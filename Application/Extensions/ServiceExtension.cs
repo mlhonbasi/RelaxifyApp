@@ -38,6 +38,7 @@ namespace Application.Extensions
             services.AddScoped<IStressTestResultService, StressTestResultService>();
             services.AddScoped<IUserGoalService, UserGoalService>();
             services.AddScoped<IAchievementService, AchievementService>();
+            services.AddScoped<IContentFeedbackService, ContentFeedbackService>();
 
             return services;
         }

@@ -30,7 +30,7 @@ namespace Infrastructure.Context
         public virtual DbSet<StressTestResult> StressTestResults { get; set; }
         public virtual DbSet<UserGoal> UserGoals { get; set; }
         public virtual DbSet<UserAchievement> UserAchievements { get; set; }
-
+        public virtual DbSet<ContentFeedbackLog> ContentFeedbackLogs { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Content>()
