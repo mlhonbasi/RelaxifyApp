@@ -12,6 +12,9 @@ namespace Application.DTOs
         public Guid ContentId { get; set; }
         public ContentCategory Category { get; set; }
         public int DurationInSeconds { get; set; }
+
+        public int? FocusLossInSeconds { get; set; }
+        public double? FocusLossRate { get; set; }
     }
 
 }

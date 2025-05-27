@@ -9,7 +9,7 @@ namespace Domain.Interfaces
         Task LogUsageAsync(Guid userId, Guid contentId, ContentCategory category, int durationInSeconds);
         Task<List<CategoryUsageDto>> GetCategoryUsageAsync(Guid userId);
         Task<List<UserContentLog>> GetUserLogsAsync(Guid userId);
-
+        Task LogFocusLossAsync(Guid userId, Guid contentId, int focusLoss, double rate);
     }
 
 }

@@ -1,6 +1,7 @@
 ﻿using Application.DTOs;
 using Application.Services.Goal;
 using Application.Services.Users;
+using Domain.Enums;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +23,18 @@ namespace Api.Controllers
                 request.Category,
                 request.DurationInSeconds
             );
+
+            if (request.Category == ContentCategory.Meditation &&
+                request.FocusLossInSeconds.HasValue &&
+                request.FocusLossRate.HasValue)
+            {
+                await logService.LogFocusLossAsync(
+                    userId,
+                    request.ContentId,
+                    request.FocusLossInSeconds.Value,
+                    request.FocusLossRate.Value
+                );
+            }
 
             return Ok(new { success = true });
         }
