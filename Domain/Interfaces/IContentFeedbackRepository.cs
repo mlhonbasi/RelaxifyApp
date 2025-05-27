@@ -8,6 +8,7 @@ namespace Domain.Interfaces
     {
         Task<bool> HasUserGivenFeedbackAsync(Guid userId, Guid contentId);
         Task<ContentFeedbackSummaryDto> GetMusicFeedbackSummaryAsync(Guid userId, SummaryRange range);
+        Task<MusicFeedbackDistributionDto> GetMusicFeedbackDistributionAsync(Guid userId);
 
     }
 }
