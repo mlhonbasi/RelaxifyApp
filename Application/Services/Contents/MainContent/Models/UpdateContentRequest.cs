@@ -13,5 +13,6 @@ namespace Application.Services.Contents.MainContent.Models
         public string Description { get; set; }
         public bool IsActive { get; set; }
         public string? ImagePath { get; set; }
+        public MeditationPurpose Purpose { get; set; } // Default to Focus purpose
     }
 }

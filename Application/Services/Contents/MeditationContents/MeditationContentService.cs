@@ -4,6 +4,7 @@ using Application.Services.Contents.MeditationContents.Models;
 using Application.Services.Users;
 using Domain.Entities;
 using Domain.Interfaces;
+using System.Diagnostics;
 using System.Text.Json;
 
 namespace Application.Services.Contents.MeditationContents
@@ -13,11 +14,15 @@ namespace Application.Services.Contents.MeditationContents
         public async Task CreateMeditationContentAsync(CreateMeditationContentRequest request)
         {
             var contentId = await contentService.CreateContentAsync(request.ContentRequest); //Create the main content first then get the ID
+            Debug.WriteLine("Gelen Purpose: " + request.Purpose);
+            Debug.WriteLine("Enum sayısal değeri: " + (int)request.Purpose);
+
 
             var meditationContent = new MeditationContent
             {
                 ContentId = contentId,
-                Steps = request.Steps
+                Steps = request.Steps,
+                Purpose = request.Purpose
             };
             await meditationContentRepository.AddAsync(meditationContent); // Save the meditation content
         }
@@ -37,6 +42,7 @@ namespace Application.Services.Contents.MeditationContents
                 Description = meditationContent.Content.Description,
                 ImagePath = meditationContent.Content.ImagePath,
                 IsActive = meditationContent.Content.IsActive,
+                Purpose = meditationContent.Purpose// Assuming Purpose is a property of Content    
             };
         }
         public async Task UpdateAsync(Guid contentId, UpdateMeditationContentRequest request)
@@ -47,7 +53,7 @@ namespace Application.Services.Contents.MeditationContents
                 throw new Exception($"Meditation content with ID {contentId} not found.");
             }
             meditationContent.Steps = request.Steps;
-
+            meditationContent.Purpose = request.ContentRequest.Purpose; // Assuming Purpose is a property of Content
             await meditationContentRepository.UpdateAsync(meditationContent);
             await contentService.UpdateAsync(contentId, request.ContentRequest);
         }

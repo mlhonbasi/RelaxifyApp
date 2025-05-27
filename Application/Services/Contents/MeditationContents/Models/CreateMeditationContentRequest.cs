@@ -1,4 +1,5 @@
 ﻿using Application.Services.Contents.MainContent.Models;
+using Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,6 @@ namespace Application.Services.Contents.MeditationContents.Models
     {
         public required CreateContentRequest ContentRequest { get; set; }
         public required string Steps { get; set; }
+        public MeditationPurpose Purpose { get; set; } // Default to Focus purpose
     }
 }
