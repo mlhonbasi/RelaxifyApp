@@ -5,7 +5,7 @@ using Domain.Interfaces;
 
 namespace Application.Services.ContentLogs
 {
-    public class UserContentLogService(IUserContentLogRepository userContentLogRepository) : IUserContentLogService
+    public class UserContentLogService(IUserContentLogRepository userContentLogRepository, IMeditationFocusLossRepository meditationFocusLossRepository) : IUserContentLogService
     {
         public async Task<List<CategoryUsageDto>> GetCategoryUsageAsync(Guid userId)
         {
@@ -37,5 +37,20 @@ namespace Application.Services.ContentLogs
         {
             return await userContentLogRepository.GetLogsByUserIdAsync(userId);
         }
+
+        public async Task LogFocusLossAsync(Guid userId, Guid contentId, int focusLoss, double rate)
+        {
+            var log = new MeditationFocusLossLog
+            {
+                UserId = userId,
+                ContentId = contentId,
+                FocusLossInSeconds = focusLoss,
+                FocusLossRate = rate,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            await meditationFocusLossRepository.AddAsync(log);
+        }
+
     }
 }
