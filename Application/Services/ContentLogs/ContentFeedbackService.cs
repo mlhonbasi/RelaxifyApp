@@ -24,10 +24,10 @@ namespace Application.Services.ContentLogs
 
             await repository.AddAsync(feedback);
         }
-        public async Task<ContentFeedbackSummaryDto> GetMusicSummaryAsync()
+        public async Task<ContentFeedbackSummaryDto> GetMusicSummaryAsync(SummaryRange range)
         {
             var userId = await userService.GetUserIdAsync();
-            var summary = await repository.GetMusicFeedbackSummaryAsync(userId);
+            var summary = await repository.GetMusicFeedbackSummaryAsync(userId, range);
             summary.LastPlayed = await contentLogRepository.GetLastPlayedMusicAsync(userId);
             return summary;
         }

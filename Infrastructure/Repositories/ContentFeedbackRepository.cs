@@ -14,18 +14,21 @@ namespace Infrastructure.Repositories
             return await context.ContentFeedbackLogs
                 .AnyAsync(f => f.UserId == userId && f.ContentId == contentId);
         }
-        public async Task<ContentFeedbackSummaryDto> GetMusicFeedbackSummaryAsync(Guid userId)
+        public async Task<ContentFeedbackSummaryDto> GetMusicFeedbackSummaryAsync(Guid userId, SummaryRange range)
         {
-            var today = DateTime.UtcNow.Date;
-            var tomorrow = today.AddDays(1);
+            DateTime start = range switch
+            {
+                SummaryRange.Today => DateTime.UtcNow.Date,
+                SummaryRange.Week => DateTime.UtcNow.Date.AddDays(-7),
+                SummaryRange.Month => DateTime.UtcNow.Date.AddMonths(-1),
+                _ => DateTime.MinValue
+            };
 
             var musicLogs = await context.UserContentLogs
-                .Where(f => f.UserId == userId && f.Category == ContentCategory.Music)
+                .Where(f => f.UserId == userId && f.Category == ContentCategory.Music && f.CreatedAt >= start)
                 .ToListAsync();
 
-            var todayDuration = musicLogs
-                .Where(f => f.CreatedAt >= today && f.CreatedAt < tomorrow)
-                .Sum(f => f.DurationInSeconds);
+            var totalDuration = musicLogs.Sum(f => f.DurationInSeconds);
 
             var mostPlayed = musicLogs
                 .GroupBy(f => f.ContentId)
@@ -40,10 +43,11 @@ namespace Infrastructure.Repositories
                 .Select(f => new LastPlayedContentDto
                 {
                     ContentId = f.ContentId,
-                    Title = "", // frontend tamamlar
+                    Title = "", // frontend'te eşleşir
                     PlayedAt = f.CreatedAt
                 })
                 .FirstOrDefault();
+
             if (mostPlayed != null)
             {
                 var content = await context.Contents
@@ -61,12 +65,14 @@ namespace Infrastructure.Repositories
                     };
                 }
             }
+
             return new ContentFeedbackSummaryDto
             {
-                TodayDurationInMinutes = todayDuration / 60,
+                TodayDurationInMinutes = totalDuration / 60,
                 MostPlayed = mostPlayedDto,
                 LastPlayed = lastPlayed
             };
         }
+
     }
 }
