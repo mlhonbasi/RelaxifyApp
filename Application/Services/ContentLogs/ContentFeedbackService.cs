@@ -36,6 +36,11 @@ namespace Application.Services.ContentLogs
             var userId = await userService.GetUserIdAsync();
             return await feedbackRepository.GetMusicFeedbackDistributionAsync(userId);
         }
+        public async Task<List<MusicFeedbackDetailDto>> GetMusicFeedbackDetailsAsync(FeedbackType feedbackType)
+        {
+            var userId = await userService.GetUserIdAsync();
+            return await feedbackRepository.GetMusicFeedbackDetailsAsync(userId, feedbackType);
+        }
 
     }
 }
