@@ -1,5 +1,6 @@
 ﻿using Application.Services.ContentFeedback.Models;
 using Application.Services.ContentLogs;
+using Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
@@ -21,9 +22,9 @@ namespace Api.Controllers
         }
 
         [HttpGet("music-summary")]
-        public async Task<IActionResult> GetMusicSummary()
+        public async Task<IActionResult> GetMusicSummary([FromQuery] SummaryRange range = SummaryRange.Week)
         {
-            var result = await feedbackService.GetMusicSummaryAsync();
+            var result = await feedbackService.GetMusicSummaryAsync(range);
             return Ok(result);
         }
     }
