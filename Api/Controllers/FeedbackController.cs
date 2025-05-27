@@ -33,6 +33,12 @@ namespace Api.Controllers
             var result = await feedbackService.GetMusicFeedbackDistributionAsync();
             return Ok(result);
         }
+        [HttpGet("music-feedback-details")]
+        public async Task<IActionResult> GetMusicFeedbackDetails([FromQuery] FeedbackType type)
+        {
+            var result = await feedbackService.GetMusicFeedbackDetailsAsync(type);
+            return Ok(result);
+        }
 
     }
 }

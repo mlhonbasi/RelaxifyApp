@@ -87,6 +87,40 @@ namespace Infrastructure.Repositories
                 StressedCount = logs.Count(f => f.Feedback == FeedbackType.Stressed)
             };
         }
+        public async Task<List<MusicFeedbackDetailDto>> GetMusicFeedbackDetailsAsync(Guid userId, FeedbackType feedbackType)
+        {
+            var query = await context.ContentFeedbackLogs
+                .Where(f => f.UserId == userId && f.Category == ContentCategory.Music && f.Feedback == feedbackType)
+                .GroupBy(f => f.ContentId)
+                .Select(g => new {
+                    ContentId = g.Key,
+                    Count = g.Count()
+                })
+                .ToListAsync();
+
+            var result = new List<MusicFeedbackDetailDto>();
+
+            foreach (var item in query)
+            {
+                var content = await context.Contents
+                    .Where(c => c.Id == item.ContentId)
+                    .Select(c => new { c.Id, c.Title })
+                    .FirstOrDefaultAsync();
+
+                if (content != null)
+                {
+                    result.Add(new MusicFeedbackDetailDto
+                    {
+                        ContentId = content.Id,
+                        Title = content.Title,
+                        Count = item.Count
+                    });
+                }
+            }
+
+            return result;
+        }
+
 
     }
 }
