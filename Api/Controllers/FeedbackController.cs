@@ -27,6 +27,13 @@ namespace Api.Controllers
             var result = await feedbackService.GetMusicSummaryAsync(range);
             return Ok(result);
         }
+        [HttpGet("music-distribution")]
+        public async Task<IActionResult> GetMusicFeedbackDistribution()
+        {
+            var result = await feedbackService.GetMusicFeedbackDistributionAsync();
+            return Ok(result);
+        }
+
     }
 }
     

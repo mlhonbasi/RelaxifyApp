@@ -7,7 +7,7 @@ using Domain.Models.Queries;
 
 namespace Application.Services.ContentLogs
 {
-    public class ContentFeedbackService(IContentFeedbackRepository repository,IUserContentLogRepository contentLogRepository ,IUserService userService) : IContentFeedbackService
+    public class ContentFeedbackService(IContentFeedbackRepository feedbackRepository,IUserContentLogRepository contentLogRepository ,IUserService userService) : IContentFeedbackService
     {
         public async Task CreateAsync(CreateFeedbackRequest request)
         {
@@ -22,14 +22,20 @@ namespace Application.Services.ContentLogs
                 UserId = userId
             };
 
-            await repository.AddAsync(feedback);
+            await feedbackRepository.AddAsync(feedback);
         }
         public async Task<ContentFeedbackSummaryDto> GetMusicSummaryAsync(SummaryRange range)
         {
             var userId = await userService.GetUserIdAsync();
-            var summary = await repository.GetMusicFeedbackSummaryAsync(userId, range);
+            var summary = await feedbackRepository.GetMusicFeedbackSummaryAsync(userId, range);
             summary.LastPlayed = await contentLogRepository.GetLastPlayedMusicAsync(userId);
             return summary;
         }
+        public async Task<MusicFeedbackDistributionDto> GetMusicFeedbackDistributionAsync()
+        {
+            var userId = await userService.GetUserIdAsync();
+            return await feedbackRepository.GetMusicFeedbackDistributionAsync(userId);
+        }
+
     }
 }

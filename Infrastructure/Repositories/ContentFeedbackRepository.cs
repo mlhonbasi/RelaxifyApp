@@ -74,5 +74,19 @@ namespace Infrastructure.Repositories
             };
         }
 
+        public async Task<MusicFeedbackDistributionDto> GetMusicFeedbackDistributionAsync(Guid userId)
+        {
+            var logs = await context.ContentFeedbackLogs
+                .Where(f => f.UserId == userId && f.Category == ContentCategory.Music)
+                .ToListAsync();
+
+            return new MusicFeedbackDistributionDto
+            {
+                RelaxedCount = logs.Count(f => f.Feedback == FeedbackType.Relaxed),
+                NeutralCount = logs.Count(f => f.Feedback == FeedbackType.Neutral),
+                StressedCount = logs.Count(f => f.Feedback == FeedbackType.Stressed)
+            };
+        }
+
     }
 }

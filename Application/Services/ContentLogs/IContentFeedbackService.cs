@@ -8,5 +8,7 @@ namespace Application.Services.ContentLogs
     {
         Task CreateAsync(CreateFeedbackRequest request);
         Task<ContentFeedbackSummaryDto> GetMusicSummaryAsync(SummaryRange range);
+        Task<MusicFeedbackDistributionDto> GetMusicFeedbackDistributionAsync();
+
     }
 }
