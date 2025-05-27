@@ -20,6 +20,7 @@ namespace Api
             builder.Services.AddRepositories(builder.Configuration);
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddServices(builder.Configuration);
+            builder.Services.AddHttpClient();
 
             // ?? JWT Authentication yapýlandýrmasý
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
