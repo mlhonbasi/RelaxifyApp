@@ -2,6 +2,8 @@
 using Infrastructure.Context;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Domain.Enums;
+using Domain.Models.Queries;
 namespace Infrastructure.Repositories
 {
 
@@ -12,6 +14,6 @@ namespace Infrastructure.Repositories
         public async Task<User> GetUserEmailAsync(string email)
         {
             return await context.Users.FirstOrDefaultAsync(x=> x.Email == email);
-        }
+        }      
     }
 }

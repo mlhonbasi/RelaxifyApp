@@ -1,9 +1,11 @@
 ﻿using Application.Services.ContentFeedback.Models;
+using Domain.Models.Queries;
 
 namespace Application.Services.ContentLogs
 {
     public interface IContentFeedbackService
     {
         Task CreateAsync(CreateFeedbackRequest request);
+        Task<ContentFeedbackSummaryDto> GetMusicSummaryAsync();
     }
 }

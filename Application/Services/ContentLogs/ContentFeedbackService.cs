@@ -3,10 +3,11 @@ using Application.Services.Users;
 using Domain.Entities;
 using Domain.Enums;
 using Domain.Interfaces;
+using Domain.Models.Queries;
 
 namespace Application.Services.ContentLogs
 {
-    public class ContentFeedbackService(IContentFeedbackRepository repository, IUserService userService) : IContentFeedbackService
+    public class ContentFeedbackService(IContentFeedbackRepository repository,IUserContentLogRepository contentLogRepository ,IUserService userService) : IContentFeedbackService
     {
         public async Task CreateAsync(CreateFeedbackRequest request)
         {
@@ -22,6 +23,13 @@ namespace Application.Services.ContentLogs
             };
 
             await repository.AddAsync(feedback);
+        }
+        public async Task<ContentFeedbackSummaryDto> GetMusicSummaryAsync()
+        {
+            var userId = await userService.GetUserIdAsync();
+            var summary = await repository.GetMusicFeedbackSummaryAsync(userId);
+            summary.LastPlayed = await contentLogRepository.GetLastPlayedMusicAsync(userId);
+            return summary;
         }
     }
 }
