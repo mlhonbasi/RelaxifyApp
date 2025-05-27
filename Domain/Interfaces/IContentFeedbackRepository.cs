@@ -1,14 +1,12 @@
 ﻿using Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Domain.Models.Queries;
 
 namespace Domain.Interfaces
 {
     public interface IContentFeedbackRepository : IRepository<ContentFeedbackLog>
     {
         Task<bool> HasUserGivenFeedbackAsync(Guid userId, Guid contentId);
+        Task<ContentFeedbackSummaryDto> GetMusicFeedbackSummaryAsync(Guid userId);
+
     }
 }

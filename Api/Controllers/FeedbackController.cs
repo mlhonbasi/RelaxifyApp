@@ -19,5 +19,13 @@ namespace Api.Controllers
             await feedbackService.CreateAsync(request);
             return Ok(new { success = true, message = "Geri bildirim kaydedildi." });
         }
+
+        [HttpGet("music-summary")]
+        public async Task<IActionResult> GetMusicSummary()
+        {
+            var result = await feedbackService.GetMusicSummaryAsync();
+            return Ok(result);
+        }
     }
 }
+    
