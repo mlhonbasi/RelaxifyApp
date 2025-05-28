@@ -74,6 +74,7 @@ namespace Application.Services.Contents.MeditationContents
                 Description = x.Content.Description,
                 ImagePath = x.Content.ImagePath,
                 IsFavorite = favorites.Contains(x.ContentId),
+                Purpose = x.Purpose,
             }).ToList();
         }
         public async Task<MeditationDetailDto> GetByIdAsync(Guid contentId)
