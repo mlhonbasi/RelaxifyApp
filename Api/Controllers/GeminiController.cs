@@ -12,7 +12,7 @@ namespace Api.Controllers
         [HttpPost("ask")]
         public async Task<IActionResult> Ask([FromBody] GeminiRequestModel model)
         {
-            var answer = await geminiService.AskGeminiAsync(model.Prompt);
+            var answer = await geminiService.AskGeminiAsync(model);
             return Ok(new { response = answer });
         }
     }

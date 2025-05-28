@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Application.Services.Chatbot.Models;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace Application.Services.Chatbot
 {
     public class GeminiService(HttpClient httpClient, IConfiguration config) : IGeminiService
     {
-        public async Task<string> AskGeminiAsync(string prompt)
+        public async Task<string> AskGeminiAsync(GeminiRequestModel model)
         {
             var apiKey = config["Gemini:ApiKey"];
             var url = $"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={apiKey}";
@@ -20,22 +21,38 @@ namespace Application.Services.Chatbot
             var body = new
             {
                 contents = new[]
+         {
+            new
+            {
+                parts = new[]
                 {
-                new
-                {
-                    parts = new[]
+                    new
                     {
-                        new { text = prompt }
+                        text = @$"
+Kullanıcı şu anda {model.Page} sayfasında.
+
+Bu sayfa içeriği şunları içeriyor:
+{model.Context.ToString()}
+
+Kullanıcının sorusu:
+{model.UserMessage}
+
+Lütfen sayfa verileriyle uyumlu, açıklayıcı ve destekleyici bir yanıt üret."
                     }
                 }
             }
+        }
             };
 
             var response = await httpClient.PostAsJsonAsync(url, body);
             response.EnsureSuccessStatusCode();
 
             var result = await response.Content.ReadFromJsonAsync<JsonElement>();
-            return result.GetProperty("candidates")[0].GetProperty("content").GetProperty("parts")[0].GetProperty("text").GetString();
+            return result.GetProperty("candidates")[0].
+                GetProperty("content").
+                GetProperty("parts")[0].
+                GetProperty("text").
+                GetString();
         }
     }
 
