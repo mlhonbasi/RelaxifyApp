@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,5 +14,6 @@ namespace Application.DTOs
         public string Description { get; set; }
         public string ImagePath { get; set; }
         public bool IsFavorite { get; set; }
+        public MeditationPurpose Purpose { get; set; }
     }
 }
