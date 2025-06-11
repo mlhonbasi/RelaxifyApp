@@ -1,4 +1,6 @@
 ﻿using Application.DTOs;
+using Application.Services.ContentLogs.Models;
+using Application.Services.ContentLogs;
 using Application.Services.Goal;
 using Application.Services.Users;
 using Domain.Enums;
@@ -161,6 +163,17 @@ namespace Api.Controllers
 
             return Ok(result);
         }
+
+        [HttpPost("log-steps")]
+        public async Task<IActionResult> LogStepDurations([FromBody] LogMeditationStepsRequest request)
+        {
+            var userId = await userService.GetUserIdAsync();
+
+            await logService.LogMeditationStepsAsync(userId, request);
+
+            return Ok(new { success = true });
+        }
+
 
     }
 }

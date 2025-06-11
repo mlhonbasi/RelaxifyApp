@@ -32,6 +32,7 @@ namespace Infrastructure.Context
         public virtual DbSet<UserAchievement> UserAchievements { get; set; }
         public virtual DbSet<ContentFeedbackLog> ContentFeedbackLogs { get; set; }
         public virtual DbSet<MeditationFocusLossLog> MeditationFocusLossLogs { get; set; }
+        public virtual DbSet<MeditationStepLog> MeditationStepLogs { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Content>()

@@ -1,11 +1,12 @@
 ﻿using Application.DTOs;
+using Application.Services.ContentLogs.Models;
 using Domain.Entities;
 using Domain.Enums;
 using Domain.Interfaces;
 
 namespace Application.Services.ContentLogs
 {
-    public class UserContentLogService(IUserContentLogRepository userContentLogRepository, IMeditationFocusLossRepository meditationFocusLossRepository) : IUserContentLogService
+    public class UserContentLogService(IUserContentLogRepository userContentLogRepository, IMeditationFocusLossRepository meditationFocusLossRepository, IMeditationStepLogRepository meditationStepLogRepository) : IUserContentLogService
     {
         public async Task<List<CategoryUsageDto>> GetCategoryUsageAsync(Guid userId)
         {
@@ -51,6 +52,22 @@ namespace Application.Services.ContentLogs
 
             await meditationFocusLossRepository.AddAsync(log);
         }
+        public async Task LogMeditationStepsAsync(Guid userId, LogMeditationStepsRequest request)
+        {
+            var logs = request.StepDurations.Select(step => new MeditationStepLog
+            {
+                UserId = userId,
+                ContentId = request.ContentId,
+                StepIndex = step.StepIndex,
+                DurationInSeconds = step.DurationInSeconds
+            }).ToList();
+
+            foreach(var log in logs)
+            {
+                await meditationStepLogRepository.AddAsync(log);
+            }
+        }
+
 
     }
 }

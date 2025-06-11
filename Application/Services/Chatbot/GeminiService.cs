@@ -29,15 +29,15 @@ namespace Application.Services.Chatbot
                     new
                     {
                         text = @$"
-Kullanıcı şu anda {model.Page} sayfasında.
+                                    Kullanıcı şu anda {model.Page} sayfasında.
 
-Bu sayfa içeriği şunları içeriyor:
-{model.Context.ToString()}
+                                    Bu sayfa içeriği şunları içeriyor:
+                                    {model.Context.ToString()}
 
-Kullanıcının sorusu:
-{model.UserMessage}
+                                    Kullanıcının sorusu:
+                                    {model.UserMessage}
 
-Lütfen sayfa verileriyle uyumlu, açıklayıcı ve destekleyici bir yanıt üret."
+                                    Lütfen sayfa verileriyle uyumlu, açıklayıcı ve destekleyici bir yanıt üret."
                     }
                 }
             }
