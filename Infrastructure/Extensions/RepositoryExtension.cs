@@ -40,6 +40,8 @@ namespace Infrastructure.Extensions
             services.AddScoped<IUserAchievementRepository, UserAchievementRepository>();
             services.AddScoped<IContentFeedbackRepository, ContentFeedbackRepository>();
             services.AddScoped<IMeditationFocusLossRepository, MeditationFocusLossRepository>();
+            services.AddScoped<IMeditationStepLogRepository, MeditationStepLogRepository>();
+
 
             services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 
