@@ -30,8 +30,7 @@ namespace Application.Services.Contents.MainContent
             {
                 throw new Exception("Content not found");
             }
-            content.IsActive = false; // Soft delete
-            await contentRepository.UpdateAsync(content);
+            await contentRepository.HardDeleteAsync(content);
         }
 
         public async Task<List<ContentDto>> GetAllAsync()
