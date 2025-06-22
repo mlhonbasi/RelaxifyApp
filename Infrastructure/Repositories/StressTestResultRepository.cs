@@ -22,5 +22,12 @@ namespace Infrastructure.Repositories
                 .OrderByDescending(r => r.CreatedAt)
                 .ToListAsync();
         }
+        public async Task<StressTestResult?> GetLastAsync(Guid userId)
+        {
+            return await context.StressTestResults
+                .Where(r => r.UserId == userId)
+                .OrderByDescending(r => r.CreatedAt)
+                .FirstOrDefaultAsync();
+        }
     }
 }
