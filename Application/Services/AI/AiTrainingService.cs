@@ -8,19 +8,37 @@ namespace Application.Services.AI
         {
             try
             {
-                await RunScript("pull_data.py");
-                await RunScript("prepare_dataset.py");
-                await RunScript("train_model.py");
-                await ReloadModelInFlaskAsync();
+                await RunScript("pull_data.py", "content_recommendation");
+                await RunScript("prepare_dataset.py", "content_recommendation");
+                await RunScript("train_model.py", "content_recommendation");
+                await ReloadModelInFlaskAsync("http://localhost:5000/reload-model");
                 return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[Retrain Error] {ex.Message}");
+                Console.WriteLine($"[Retrain Error - Recommendation] {ex.Message}");
                 return false;
             }
         }
-        private Task RunScript(string fileName)
+
+        public async Task<bool> RetrainStressModelAsync()
+        {
+            try
+            {
+                await RunScript("pull_data.py", "stress_prediction");
+                await RunScript("prepare_dataset.py", "stress_prediction");
+                await RunScript("train_model.py", "stress_prediction");
+                await ReloadModelInFlaskAsync("http://localhost:5000/reload-stress-model");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[Retrain Error - Stress] {ex.Message}");
+                return false;
+            }
+        }
+
+        private Task RunScript(string fileName, string workingDir)
         {
             var tcs = new TaskCompletionSource();
 
@@ -30,7 +48,7 @@ namespace Application.Services.AI
                 {
                     FileName = "python",
                     Arguments = fileName,
-                    WorkingDirectory = @"C:\Users\draig\Desktop\relaxify_ai\content_recommendation", // 🟡 kendi dizinini yaz
+                    WorkingDirectory = $@"C:\Users\draig\Desktop\relaxify_ai\{workingDir}",
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
                     UseShellExecute = false,
@@ -38,6 +56,7 @@ namespace Application.Services.AI
                 },
                 EnableRaisingEvents = true
             };
+
             process.OutputDataReceived += (s, e) =>
             {
                 if (e.Data != null)
@@ -55,7 +74,7 @@ namespace Application.Services.AI
                 if (process.ExitCode == 0)
                     tcs.SetResult();
                 else
-                    tcs.SetException(new Exception($"Script {fileName} failed."));
+                    tcs.SetException(new Exception($"Script {fileName} failed in {workingDir}"));
             };
 
             process.Start();
@@ -64,18 +83,19 @@ namespace Application.Services.AI
 
             return tcs.Task;
         }
-        private async Task ReloadModelInFlaskAsync()
+
+        private async Task ReloadModelInFlaskAsync(string endpoint)
         {
             using var client = new HttpClient();
-            var response = await client.PostAsync("http://localhost:5000/reload-model", null);
+            var response = await client.PostAsync(endpoint, null);
             if (!response.IsSuccessStatusCode)
             {
                 var msg = await response.Content.ReadAsStringAsync();
-                Console.WriteLine($"❌ Flask reload-model başarısız: {msg}");
+                Console.WriteLine($"❌ Flask model reload başarısız: {msg}");
             }
             else
             {
-                Console.WriteLine("✅ Flask modeli yeniden yüklendi.");
+                Console.WriteLine($"✅ Flask modeli yeniden yüklendi → {endpoint}");
             }
         }
     }
