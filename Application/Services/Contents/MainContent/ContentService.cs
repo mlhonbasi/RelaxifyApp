@@ -6,7 +6,7 @@ using Application.Services.Users;
 
 namespace Application.Services.Contents.MainContent
 {
-    public class ContentService(IContentRepository contentRepository,   IFavoriteRepository favoriteRepository ,IUserService userService) : IContentService
+    public class ContentService(IContentRepository contentRepository, IFavoriteRepository favoriteRepository , IUserService userService) : IContentService
     {
         public async Task<Guid> CreateContentAsync(CreateContentRequest request)
         {
@@ -47,7 +47,21 @@ namespace Application.Services.Contents.MainContent
                 ImageUrl = content.ImagePath
             }).ToList();
         }
+        public async Task<ContentDto?> GetContentByIdAsync(Guid id)
+        {
+            var content = await contentRepository.GetByIdAsync(id);
+            if (content == null)
+                return null;
 
+            return new ContentDto
+            {
+                Id = content.Id,
+                Title = content.Title,
+                Description = content.Description,
+                ImageUrl = content.ImagePath,
+                Category = content.Category
+            };
+        }
         public async Task<ContentDto> GetByIdAsync(Guid id)
         {
             var content = await contentRepository.GetByIdAsync(id);

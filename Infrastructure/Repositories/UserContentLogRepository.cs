@@ -38,5 +38,13 @@ namespace Infrastructure.Repositories
                 })
                 .FirstOrDefaultAsync();
         }
+        public async Task<UserContentLog?> GetLastAsync(Guid userId)
+        {
+            return await context.UserContentLogs
+                .Where(log => log.UserId == userId)
+                .OrderByDescending(log => log.CreatedAt)
+                .FirstOrDefaultAsync();
+        }
+
     }
 }

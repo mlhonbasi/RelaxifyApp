@@ -13,6 +13,7 @@ namespace Domain.Interfaces
         Task<List<UserContentLog>> GetCategoryUsageAsync(Guid userId);
         Task<List<UserContentLog>> GetLogsByUserIdAsync(Guid userId);
         Task<LastPlayedContentDto?> GetLastPlayedMusicAsync(Guid userId);
+        Task<UserContentLog?> GetLastAsync(Guid userId);
 
     }
 }

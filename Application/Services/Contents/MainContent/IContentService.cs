@@ -7,6 +7,7 @@ namespace Application.Services.Contents.MainContent
     {
         Task<Guid> CreateContentAsync(CreateContentRequest request);
         Task<ContentDto> GetByIdAsync(Guid id);
+        Task<ContentDto?> GetContentByIdAsync(Guid id);
         Task<List<ContentDto>> GetAllAsync();
         Task UpdateAsync(Guid id, UpdateContentRequest request);
         Task DeleteAsync(Guid id);

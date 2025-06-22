@@ -16,6 +16,7 @@ using Application.Services.StressTestResult;
 using Application.Services.Goal;
 using Application.Services.Achievement;
 using Application.Services.Chatbot;
+using Application.Services.AI;
 
 namespace Application.Extensions
 {
@@ -41,6 +42,7 @@ namespace Application.Extensions
             services.AddScoped<IAchievementService, AchievementService>();
             services.AddScoped<IContentFeedbackService, ContentFeedbackService>();
             services.AddScoped<IGeminiService, GeminiService>();
+            services.AddScoped<IAiTrainingService, AiTrainingService>();
 
             return services;
         }
