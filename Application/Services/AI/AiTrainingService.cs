@@ -30,7 +30,7 @@ namespace Application.Services.AI
                 {
                     FileName = "python",
                     Arguments = fileName,
-                    WorkingDirectory = @"C:\Users\draig\Desktop\relaxify_ai", // 🟡 kendi dizinini yaz
+                    WorkingDirectory = @"C:\Users\draig\Desktop\relaxify_ai\content_recommendation", // 🟡 kendi dizinini yaz
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
                     UseShellExecute = false,

@@ -17,6 +17,7 @@ using Application.Services.Goal;
 using Application.Services.Achievement;
 using Application.Services.Chatbot;
 using Application.Services.AI;
+using Microsoft.Extensions.Http;
 
 namespace Application.Extensions
 {
@@ -43,6 +44,8 @@ namespace Application.Extensions
             services.AddScoped<IContentFeedbackService, ContentFeedbackService>();
             services.AddScoped<IGeminiService, GeminiService>();
             services.AddScoped<IAiTrainingService, AiTrainingService>();
+            services.AddScoped<IStressPredictionInputBuilderService, StressPredictionInputBuilderService>();
+            services.AddHttpClient<IStressPredictionService, StressPredictionService>();
 
             return services;
         }
