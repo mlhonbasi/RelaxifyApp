@@ -16,5 +16,14 @@ namespace Api.Controllers
 
             return StatusCode(500, new { success = false, message = "Model retrain işlemi başarısız." });
         }
+        [HttpPost("retrain-stress")]
+        public async Task<IActionResult> RetrainStressModel()
+        {
+            var result = await aiService.RetrainStressModelAsync();
+            if (result)
+                return Ok(new { success = true, message = "Stres modeli retrain işlemi başarılı." });
+
+            return StatusCode(500, new { success = false, message = "Stres modeli retrain işlemi başarısız." });
+        }
     }
 }

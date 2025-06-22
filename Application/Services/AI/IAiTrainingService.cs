@@ -3,5 +3,6 @@
     public interface IAiTrainingService
     {
         Task<bool> RetrainModelAsync();
+        Task<bool> RetrainStressModelAsync();
     }
 }

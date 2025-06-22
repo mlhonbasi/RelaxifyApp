@@ -4,7 +4,7 @@ namespace Api.Services
 {  
     public class AiModelRetrainService(IServiceScopeFactory scopeFactory) : BackgroundService
     {
-        private readonly TimeSpan _interval = TimeSpan.FromHours(2);
+        private readonly TimeSpan _interval = TimeSpan.FromMinutes(1);
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             while (!stoppingToken.IsCancellationRequested)
@@ -14,7 +14,10 @@ namespace Api.Services
                 using (var scope = scopeFactory.CreateScope())
                 {
                     var trainingService = scope.ServiceProvider.GetRequiredService<IAiTrainingService>();
-                    await trainingService.RetrainModelAsync();
+                    var recommendationSuccess = await trainingService.RetrainModelAsync();
+                    var stressSuccess = await trainingService.RetrainStressModelAsync();
+                    Console.WriteLine($" Öneri retrain: {(recommendationSuccess ? "Olumlu" : "Olumsuz")}");
+                    Console.WriteLine($" Stres retrain: {(stressSuccess ? "Olumlu" : "Olumsuz")}");
                 }
 
                 Console.WriteLine($"[AI Retrain] Tamamlandı. Sonraki {_interval} sonra tekrar.");
