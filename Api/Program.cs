@@ -1,8 +1,9 @@
-using Infrastructure.Extensions;
+using Api.Services;
 using Application.Extensions;
+using Infrastructure.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;             
-using System.Text;                                 
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Api
 {
@@ -19,6 +20,7 @@ namespace Api
 
             builder.Services.AddRepositories(builder.Configuration);
             builder.Services.AddHttpContextAccessor();
+            builder.Services.AddHostedService<AiModelRetrainService>();
             builder.Services.AddServices(builder.Configuration);
             builder.Services.AddHttpClient();
 
