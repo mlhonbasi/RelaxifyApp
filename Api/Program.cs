@@ -23,6 +23,10 @@ namespace Api
             builder.Services.AddHostedService<AiModelRetrainService>();
             builder.Services.AddServices(builder.Configuration);
             builder.Services.AddHttpClient();
+            builder.WebHost.ConfigureKestrel(options =>
+            {
+                options.ListenAnyIP(5097);
+            });
 
             // ?? JWT Authentication yapýlandýrmasý
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
