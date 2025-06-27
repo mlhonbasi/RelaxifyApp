@@ -85,7 +85,13 @@ namespace Application.Services.Contents.MeditationContents
             if (meditation == null || meditation.Content == null)
                 throw new Exception("Meditasyon içeriği bulunamadı");
 
-            var steps = JsonSerializer.Deserialize<List<MeditationStepDto>>(meditation.Steps ?? "[]");
+            var steps = JsonSerializer.Deserialize<List<MeditationStepDto>>(
+                meditation.Steps ?? "[]",
+                new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+
 
             return new MeditationDetailDto
             {
