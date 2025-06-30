@@ -4,7 +4,7 @@ namespace Api.Services
 {  
     public class AiModelRetrainService(IServiceScopeFactory scopeFactory) : BackgroundService
     {
-        private readonly TimeSpan _interval = TimeSpan.FromMinutes(1);
+        private readonly TimeSpan _interval = TimeSpan.FromHours(1);
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             while (!stoppingToken.IsCancellationRequested)

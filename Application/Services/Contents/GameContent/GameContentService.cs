@@ -12,6 +12,7 @@ namespace Application.Services.Contents.GameContent
     {
         public async Task CreateGameContentAsync(CreateGameContentRequest request)
         {
+            request.ContentRequest.Category = Domain.Enums.ContentCategory.Game;
             var contentId = await contentService.CreateContentAsync(request.ContentRequest);
 
             var gameContent = new Domain.Entities.GameContent
@@ -20,7 +21,7 @@ namespace Application.Services.Contents.GameContent
                 KeyName = request.KeyName,
                 Category = request.GameCategory,
             };
-            await gameContentRepository.AddAsync(gameContent); // Save the breathing content
+            await gameContentRepository.AddAsync(gameContent);
         }
 
         public async Task DeleteAsync(Guid contentId)
