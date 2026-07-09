@@ -37,8 +37,11 @@ sınırlarını bozmadan konuşur.
 
 ## AI/ML ve Dış Servis Entegrasyonları
 
-Bu repo model eğitimi ya da ses sentezi mantığını içermez — bir
-**tüketici/orkestratör** olarak üç ayrı dış servisle konuşur:
+Bu repo ses sentezi mantığını içermez, sadece ElevenLabs'i çağırır. Model
+eğitimi/tahmini içinse hem **tüketici** hem **orkestratör** rolündedir:
+tahmin istekleri harici bir Flask servisine HTTP ile gönderilir, ama model
+**retrain işlemini bu backend'in kendisi tetikler** — bkz. aşağıdaki
+"Otomatik model retrain" maddesi.
 
 - **İçerik önerisi** (`RecommendationController`): kullanıcının son içerik
   kategorisi, kullanım süresi, saat/gün bilgisi ve son stres skoru bir araya
@@ -46,12 +49,19 @@ Bu repo model eğitimi ya da ses sentezi mantığını içermez — bir
   göre öneri detayları döndürülür.
 - **Stres tahmini** (`StressController`, `StressPredictionService`):
   benzer girdilerle aynı ML servisinden bir stres skoru tahmini alınır.
-- **Otomatik model retrain** — `AiController`'daki `retrain` /
-  `retrain-stress` uç noktaları modelin yeniden eğitilmesini manuel
-  tetikler; ayrıca `AiModelRetrainService` adında saatte bir çalışan gerçek
-  bir `BackgroundService` (`IHostedService`), her iterasyonda
-  `IServiceScopeFactory` ile ayrı bir DI scope açıp hem öneri hem stres
-  modelini otomatik retrain eder.
+- **Otomatik model retrain** (`AiTrainingService`) — `AiController`'daki
+  `retrain` / `retrain-stress` uç noktaları manuel, `AiModelRetrainService`
+  adında saatte bir çalışan gerçek bir `BackgroundService` (`IHostedService`,
+  her iterasyonda `IServiceScopeFactory` ile ayrı bir DI scope açıyor)
+  otomatik olarak retrain'i tetikler. Retrain, ML servisine bir HTTP isteği
+  değildir: backend, sırasıyla `pull_data.py` → `prepare_dataset.py` →
+  `train_model.py` script'lerini yerel bir `python` process'i olarak
+  çalıştırır (`Process.Start`), ardından Flask'a `/reload-model` veya
+  `/reload-stress-model` çağrısı yaparak yeni modeli belleğe yükletir.
+  > Script'lerin çalışma dizini `AiTrainingService.RunScript` içinde
+  > `C:\Users\draig\Desktop\relaxify_ai\...` olarak sabit — kendi
+  > makinende retrain'i çalıştırmak istersen bu yolu kendi `relaxify_ai`
+  > klonunun konumuna göre güncellemen yeterli.
 - **Chatbot** (`GeminiController`, `GeminiService`): Google Gemini API'si
   ile, kullanıcının bulunduğu sayfaya göre (anasayfa, stres raporu,
   meditasyon detayı vb.) farklı prompt şablonları üreten bir asistan.
