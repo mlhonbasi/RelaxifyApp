@@ -45,17 +45,16 @@ namespace Infrastructure.Context
         {
             if (!optionsBuilder.IsConfigured)
             {
-                string? connectionString;
+                // EF CLI çağırdığında (parametresiz kurucu) _configuration DI'dan gelmediği için
+                // appsettings.json + appsettings.Development.json'dan elle okunur. Development
+                // dosyası .gitignore'da olduğundan gerçek bağlantı bilgisi repoya girmez.
+                var configuration = _configuration ?? new ConfigurationBuilder()
+                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile("appsettings.json", optional: true)
+                    .AddJsonFile("appsettings.Development.json", optional: true)
+                    .Build();
 
-                if (_configuration != null)
-                {
-                    connectionString = _configuration.GetConnectionString("db_relaxify");
-                }
-                else
-                {
-                    // EF CLI çağırdığında burası devreye girer
-                    connectionString = "Server=REDACTED_HOST;Port=5432;Database=db_relaxify;User Id=postgres;Password=REDACTED;";
-                }
+                var connectionString = configuration.GetConnectionString("db_relaxify");
 
                 optionsBuilder.UseNpgsql(connectionString);
                 optionsBuilder.LogTo(Console.WriteLine, LogLevel.Warning) // veya Error, Critical
