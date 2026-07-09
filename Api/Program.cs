@@ -2,6 +2,7 @@ using Api.Services;
 using Application.Extensions;
 using Infrastructure.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -28,7 +29,7 @@ namespace Api
                 options.ListenAnyIP(5097);
             });
 
-            // ?? JWT Authentication yap�land�rmas�
+            // ?? JWT Authentication yapılandırması
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
@@ -42,6 +43,15 @@ namespace Api
                             Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
                     };
                 });
+
+            // Varsayılan olarak tüm endpoint'ler kimlik doğrulaması ister;
+            // sadece [AllowAnonymous] ile işaretlenenler (örn. Login/Register) açık kalır.
+            builder.Services.AddAuthorization(options =>
+            {
+                options.FallbackPolicy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .Build();
+            });
 
             builder.Services.AddCors(options =>
             {

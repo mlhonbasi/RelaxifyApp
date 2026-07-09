@@ -2,12 +2,14 @@
 using Application.Services.Authentications.Login.DTOs;
 using Application.Services.Authentications.Register;
 using Application.Services.Authentications.Register.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [AllowAnonymous]
     public class AuthController(IRegisterService registerService, ILoginService loginService) : ControllerBase
     {
         [HttpPost("[action]")]
