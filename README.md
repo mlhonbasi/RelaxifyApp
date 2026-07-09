@@ -58,10 +58,11 @@ tahmin istekleri harici bir Flask servisine HTTP ile gönderilir, ama model
   `train_model.py` script'lerini yerel bir `python` process'i olarak
   çalıştırır (`Process.Start`), ardından Flask'a `/reload-model` veya
   `/reload-stress-model` çağrısı yaparak yeni modeli belleğe yükletir.
-  > Script'lerin çalışma dizini `AiTrainingService.RunScript` içinde
-  > `C:\Users\draig\Desktop\relaxify_ai\...` olarak sabit — kendi
-  > makinende retrain'i çalıştırmak istersen bu yolu kendi `relaxify_ai`
-  > klonunun konumuna göre güncellemen yeterli.
+  > Script'lerin çalışma dizini `appsettings.Development.json`'daki
+  > `AiPipeline:ScriptsRootPath` alanından okunur — kendi makinende
+  > retrain'i çalıştırmak istersen bu değeri kendi
+  > [`relaxify-ml`](https://github.com/mlhonbasi/relaxify-ml) klonunun
+  > konumuna göre ayarlaman yeterli.
 - **Chatbot** (`GeminiController`, `GeminiService`): Google Gemini API'si
   ile, kullanıcının bulunduğu sayfaya göre (anasayfa, stres raporu,
   meditasyon detayı vb.) farklı prompt şablonları üreten bir asistan.
@@ -128,7 +129,7 @@ içinde kalır.
 ## Proje Yapısı
 
 ```
-RelaxifyApp/
+relaxify-backend/
 ├── Api/                      # Controller'lar, Program.cs, appsettings, wwwroot (upload'lar)
 │   └── Controllers/
 ├── Application/               # Servisler (Auth, Content, Stress, AI, Chatbot, Achievement, Goal, Profile...)
