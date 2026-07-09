@@ -1,8 +1,9 @@
 ﻿using System.Diagnostics;
+using Microsoft.Extensions.Configuration;
 
 namespace Application.Services.AI
 {
-    public class AiTrainingService : IAiTrainingService
+    public class AiTrainingService(IConfiguration configuration) : IAiTrainingService
     {
         public async Task<bool> RetrainModelAsync()
         {
@@ -48,7 +49,7 @@ namespace Application.Services.AI
                 {
                     FileName = "python",
                     Arguments = fileName,
-                    WorkingDirectory = $@"C:\Users\draig\Desktop\relaxify_ai\{workingDir}",
+                    WorkingDirectory = Path.Combine(configuration["AiPipeline:ScriptsRootPath"]!, workingDir),
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
                     UseShellExecute = false,
